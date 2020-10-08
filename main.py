@@ -47,4 +47,10 @@ class Scanner:
         try:
             self.file = open(file_path, 'r')
         except FileNotFoundError as e:
+
             pass
+
+    def get_next_token(self, ):
+        pass
+
+
