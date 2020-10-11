@@ -1,3 +1,8 @@
+from .exceptions import (BufferSizeExceeded, RegexNotMatchError,
+                         WrongSyntaxError)
+from .automata import DFA
+
+
 class Token:
 
     def __init__(self, token_type, token_char, line_found):
@@ -61,11 +66,29 @@ class TokenTable(Table):
 
 class Buffer:
 
-    def __init__(self, file):
+    def __init__(self, file, max_size=4096):
+        self.file = file
+        self.max_size = max_size
+        self.current_char = ''
+        self.current_string = ''
         pass
 
     def __call__(self, *args, **kwargs):
-        pass
+        return self.__read_char()
+
+    def clear(self):
+        self.current_char = ''
+        self.current_string = ''
+
+    def __read_char(self):
+        if len(self.current_string) >= self.max_size:
+            raise BufferSizeExceeded
+        self.current_char = self.file.read(1)
+        self.current_string += self.current_string
+        return self.current_char
+
+    def seek_prev(self):
+        self.file.seek(self.file.tell() - 1)
 
 
 class Scanner:
@@ -75,8 +98,15 @@ class Scanner:
         try:
             self.file = open(file_path, 'r')
         except FileNotFoundError as e:
-
-            pass
+            raise e
+        self.buffer = Buffer(file=self.file, max_size=4096)
+        self.dfa = DFA()
+        self.line_number = 1
 
     def get_next_token(self, ):
-        pass
+        while True:
+            try:
+                char = self.buffer()
+                self.dfa.run(char=char)
+            except RegexNotMatchError as e:
+                raise WrongSyntaxError(line_number=self.line_number)
