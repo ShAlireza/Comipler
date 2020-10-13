@@ -3,15 +3,8 @@ from .exceptions import (BufferSizeExceeded, RegexNotMatchError,
 from .automata import DFA
 
 
-class Token:
-
-    def __init__(self, token_type, token_char, line_found):
-        self.token_type = token_type
-        self.token_char = token_char  # what's the difference between char and line found?!
-        self.line_found = line_found
-
-
 class Table:
+
     def log(self, *args, **kwargs):
         raise NotImplementedError("Method not implemented")
 
@@ -19,7 +12,7 @@ class Table:
         raise NotImplementedError("Method not implemented")
 
 
-class ErrorTable(Table):  # the template is (error, error message) not what mentioned below
+class ErrorTable(Table):
     TEMPLATE = 'Error in line {line_number}: {msg}'
 
     def __init__(self, file_name='lexical_errors', extension='txt'):
@@ -67,6 +60,7 @@ class SymbolTable(Table):
 
 
 class TokenTable(Table):
+
     def log(self):
         pass
 
@@ -83,18 +77,22 @@ class Buffer:
         self.current_string = ''
         pass
 
-    def __call__(self, *args, **kwargs):  # why?!
+    def __call__(self, *args, **kwargs):
         return self.__read_char()
 
     def clear(self):
-        self.current_char = ''  # when we reach EOF python would return '' ##ambiguity##
+        self.current_char = ''
         self.current_string = ''
+
+    @property
+    def is_first_char(self):
+        return len(self.current_string) == 1
 
     def __read_char(self):
         if len(self.current_string) >= self.max_size:
             raise BufferSizeExceeded
         self.current_char = self.file.read(1)
-        self.current_string += self.current_string  # think it should be += self.current.char
+        self.current_string += self.current_string
         return self.current_char
 
     def seek_prev(self):
@@ -127,6 +125,10 @@ class Scanner:
         while True:
             try:
                 char = self.buffer()
-                self.dfa.run(char=char)
+                self.dfa(
+                    current_char=char,
+                    current_string=self.buffer.current_string,
+                    is_first_char=self.buffer.is_first_char
+                )
             except RegexNotMatchError as e:
                 raise WrongSyntaxError(line_number=self.line_number)
