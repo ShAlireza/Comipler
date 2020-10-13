@@ -1,8 +1,6 @@
-import string
-
-DIGITS = string.digits
-ALPHABETS = string.ascii_letters
-WHITESPACES = string.whitespace
+DIGITS = '0123456789'
+ALPHABETS = 'abcdefghijklmnopqrstuvwxyz' + 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+WHITESPACES = ' \t\n\r\v\f'
 PUNCTUATIONS = ';:,[](){}+-*=<\\'
 COMMENTS = '/'
 LANGUAGE = DIGITS + ALPHABETS + PUNCTUATIONS + COMMENTS

@@ -35,7 +35,6 @@ class DFA:
         self.symbol = SymbolRegex()
         self.comment = CommentRegex()
         self.white_space = WhiteSpaceRegex()
-
         self.current_regex = self.identifier
 
     def run(self, char):

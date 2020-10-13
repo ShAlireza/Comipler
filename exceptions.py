@@ -24,3 +24,4 @@ class WrongSyntaxError(CompileError):
         self.line_number = line_number
         self.message = message.format(line_number)
         super().__init__(self.message)
+
