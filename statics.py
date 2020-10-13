@@ -10,7 +10,6 @@ RESERVED_WORDS = ('if', 'else', 'void', 'int', 'while', 'break', 'switch',
 
 
 NUM = 'NUM'
-ID = 'ID'
-KEYWORD = 'KEYWORD'
+ID_KEYWORD = 'ID'
 SYMBOL = 'SYMBOL'
 COMMENT = 'COMMENT'

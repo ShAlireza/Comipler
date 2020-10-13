@@ -12,7 +12,6 @@ class BufferSizeExceeded(CompileError):
 
 
 class RegexNotMatchError(CompileError):
-
     def __init__(self, message='regex match failed'):
         self.message = message
         super().__init__(self.message)
@@ -21,6 +20,13 @@ class RegexNotMatchError(CompileError):
 class WrongSyntaxError(CompileError):
 
     def __init__(self, line_number, message='wrong syntax in line {}'):
+        self.line_number = line_number
+        self.message = message.format(line_number)
+        super().__init__(self.message)
+
+
+class FirstOfFileError(CompileError):
+    def __init__(self, line_number, message='not able to reach beginning of file in line {}'):
         self.line_number = line_number
         self.message = message.format(line_number)
         super().__init__(self.message)
