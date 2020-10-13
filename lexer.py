@@ -1,5 +1,4 @@
-from .exceptions import (BufferSizeExceeded, RegexNotMatchError,
-                         WrongSyntaxError, FirstOfFileError)
+import exceptions as ex
 from statics import ALPHABETS, DIGITS, PUNCTUATIONS, WHITESPACES, COMMENTS, LANGUAGE, RESERVED_WORDS, NUM, ID_KEYWORD, \
     SYMBOL, COMMENT
 
@@ -11,7 +10,6 @@ class Scanner:
             self.file = open(file_path, 'r')
         except FileNotFoundError as e:
             raise e
-
         self.dfa = CompilerDFA()
         self.line_number = 1
         self.current_char = ''
@@ -20,7 +18,7 @@ class Scanner:
         self.symbol_table = SymbolTable()
         self.token_table = TokenTable()
 
-    def get_next_token(self):
+    def get_next_token(self):  # as mentioned; we shouldn't have these many look ahead chrs.
         try:
             self.read_char()
             token_found, token_type = self.dfa(current_char=self.current_char, current_string=self.current_string,
@@ -48,8 +46,18 @@ class Scanner:
                 self.clear()
 
             return self.get_next_token()
-        except RegexNotMatchError as e:
-            raise WrongSyntaxError(line_number=self.line_number)
+
+        except ex.RegexNotMatchError as e:
+            raise ex.WrongSyntaxError(line_number=self.line_number)
+        except ex.UnclosedComment as e:
+            pass
+        except ex.InvalidInput as e:
+            pass
+        except ex.InvalidNumber as e:
+            pass
+        except ex.Unmatched as e:
+            pass
+
 
     def look_ahead_char(self):
         c = self.file.read(1)
@@ -65,7 +73,7 @@ class Scanner:
         if self.file.tell() > 0:
             self.file.seek(self.file.tell() - 1)
         else:
-            raise FirstOfFileError
+            raise ex.FirstOfFileError
 
     def clear(self):
         self.current_char = ''

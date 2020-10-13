@@ -31,3 +31,30 @@ class FirstOfFileError(CompileError):
         self.message = message.format(line_number)
         super().__init__(self.message)
 
+
+class InvalidInput(CompileError):
+    def __init__(self, line_number, message='not able to reach beginning of file in line {}'):
+        self.line_number = line_number
+        self.message = message.format(line_number)
+        super().__init__(self.message)
+
+
+class UnclosedComment(CompileError):
+    def __init__(self, line_number, message='not able to reach beginning of file in line {}'):
+        self.line_number = line_number
+        self.message = message.format(line_number)
+        super().__init__(self.message)
+
+
+class Unmatched(CompileError):
+    def __init__(self, line_number, message='not able to reach beginning of file in line {}'):
+        self.line_number = line_number
+        self.message = message.format(line_number)
+        super().__init__(self.message)
+
+
+class InvalidNumber(CompileError):
+    def __init__(self, line_number, message='not able to reach beginning of file in line {}'):
+        self.line_number = line_number
+        self.message = message.format(line_number)
+        super().__init__(self.message)
