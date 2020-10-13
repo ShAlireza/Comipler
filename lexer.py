@@ -7,12 +7,11 @@ class Token:
 
     def __init__(self, token_type, token_char, line_found):
         self.token_type = token_type
-        self.token_char = token_char
+        self.token_char = token_char  # what's the difference between char and line found?!
         self.line_found = line_found
 
 
 class Table:
-
     def log(self, *args, **kwargs):
         raise NotImplementedError("Method not implemented")
 
@@ -20,7 +19,7 @@ class Table:
         raise NotImplementedError("Method not implemented")
 
 
-class ErrorTable(Table):
+class ErrorTable(Table):  # the template is (error, error message) not what mentioned below
     TEMPLATE = 'Error in line {line_number}: {msg}'
 
     def __init__(self, file_name='lexical_errors', extension='txt'):
@@ -68,7 +67,6 @@ class SymbolTable(Table):
 
 
 class TokenTable(Table):
-
     def log(self):
         pass
 
@@ -85,18 +83,18 @@ class Buffer:
         self.current_string = ''
         pass
 
-    def __call__(self, *args, **kwargs):
+    def __call__(self, *args, **kwargs):  # why?!
         return self.__read_char()
 
     def clear(self):
-        self.current_char = ''
+        self.current_char = ''  # when we reach EOF python would return '' ##ambiguity##
         self.current_string = ''
 
     def __read_char(self):
         if len(self.current_string) >= self.max_size:
             raise BufferSizeExceeded
         self.current_char = self.file.read(1)
-        self.current_string += self.current_string
+        self.current_string += self.current_string  # think it should be += self.current.char
         return self.current_char
 
     def seek_prev(self):
