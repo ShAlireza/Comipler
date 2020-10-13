@@ -129,6 +129,6 @@ class Scanner:
         while True:
             try:
                 char = self.buffer()
-                self.dfa.run(char=char)
+                self.dfa.run(char=char, )
             except RegexNotMatchError as e:
                 raise WrongSyntaxError(line_number=self.line_number)

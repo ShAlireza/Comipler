@@ -4,27 +4,39 @@ from .exceptions import RegexNotMatchError
 
 
 class Regex:
-    pass
+
+    def check(self, char, string):
+        raise NotImplementedError
 
 
 class NumRegex(Regex):
-    pass
+
+    def check(self, char, string):
+        pass
 
 
 class IdKeyWordRegex(Regex):
-    pass
+
+    def check(self, char, string):
+        pass
 
 
 class SymbolRegex(Regex):
-    pass
+
+    def check(self, char, string):
+        pass
 
 
 class CommentRegex(Regex):
-    pass
+
+    def check(self, char, string):
+        pass
 
 
 class WhiteSpaceRegex(Regex):
-    pass
+
+    def check(self, char, string):
+        pass
 
 
 class DFA:
@@ -37,7 +49,19 @@ class DFA:
         self.white_space = WhiteSpaceRegex()
         self.current_regex = self.identifier
 
-    def run(self, char):
+    def __call__(self, current_char, current_string,
+                 is_first_char=False, *args, **kwargs):
+        if is_first_char:
+            self.start(
+                char=current_char
+            )
+        else:
+            self.identifier.check(
+                char=current_char,
+                string=current_string
+            )
+
+    def start(self, char):
         if char in ALPHABETS:
             self.current_regex = self.identifier
         elif char in DIGITS:
