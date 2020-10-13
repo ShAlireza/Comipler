@@ -3,14 +3,6 @@ from .exceptions import (BufferSizeExceeded, RegexNotMatchError,
 from .automata import DFA
 
 
-class Token:
-
-    def __init__(self, token_type, token_char, line_found):
-        self.token_type = token_type
-        self.token_char = token_char
-        self.line_found = line_found
-
-
 class Table:
 
     def log(self, *args, **kwargs):
@@ -92,6 +84,10 @@ class Buffer:
         self.current_char = ''
         self.current_string = ''
 
+    @property
+    def is_first_char(self):
+        return len(self.current_string) == 1
+
     def __read_char(self):
         if len(self.current_string) >= self.max_size:
             raise BufferSizeExceeded
@@ -129,6 +125,10 @@ class Scanner:
         while True:
             try:
                 char = self.buffer()
-                self.dfa.run(char=char, )
+                self.dfa(
+                    current_char=char,
+                    current_string=self.buffer.current_string,
+                    is_first_char=self.buffer.is_first_char
+                )
             except RegexNotMatchError as e:
                 raise WrongSyntaxError(line_number=self.line_number)

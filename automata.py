@@ -1,6 +1,14 @@
 from statics import ALPHABETS, DIGITS, PUNCTUATIONS, WHITESPACES, COMMENTS
+from statics import NUM, ID, KEYWORD, SYMBOL, COMMENT
 
 from .exceptions import RegexNotMatchError
+
+
+class Token:
+
+    def __init__(self, token_type, token_string):
+        self.token_type = token_type
+        self.token_string = token_string
 
 
 class Regex:
@@ -12,7 +20,7 @@ class Regex:
 class NumRegex(Regex):
 
     def check(self, char, string):
-        pass
+        return Token(token_type=NUM, token_string=string)  # Return Example
 
 
 class IdKeyWordRegex(Regex):
@@ -52,7 +60,7 @@ class DFA:
     def __call__(self, current_char, current_string,
                  is_first_char=False, *args, **kwargs):
         if is_first_char:
-            self.start(
+            self.__set_identifier(
                 char=current_char
             )
         else:
@@ -61,7 +69,7 @@ class DFA:
                 string=current_string
             )
 
-    def start(self, char):
+    def __set_identifier(self, char):
         if char in ALPHABETS:
             self.current_regex = self.identifier
         elif char in DIGITS:
