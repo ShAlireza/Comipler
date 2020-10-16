@@ -354,5 +354,5 @@ class Scanner:
         self.symbol_table.write_on_file()
 
 
-scanner = Scanner('test.txt')
+scanner = Scanner('../test.txt')
 scanner.simulate()
