@@ -1,6 +1,7 @@
 from .exceptions import (BufferSizeExceeded, RegexNotMatchError,
                          WrongSyntaxError, FirstOfFileError)
-from statics import ALPHABETS, DIGITS, PUNCTUATIONS, WHITESPACES, COMMENTS, LANGUAGE, RESERVED_WORDS, NUM, ID_KEYWORD, \
+from statics import ALPHABETS, DIGITS, PUNCTUATIONS, WHITESPACES, COMMENTS, \
+    LANGUAGE, RESERVED_WORDS, NUM, ID_KEYWORD, \
     SYMBOL, COMMENT
 
 
@@ -23,8 +24,12 @@ class Scanner:
     def get_next_token(self):
         try:
             self.read_char()
-            token_found, token_type = self.dfa(current_char=self.current_char, current_string=self.current_string,
-                                               look_ahead_char=self.look_ahead_char())
+            token_found, token_type = self.dfa(
+                current_char=self.current_char,
+                current_string=self.current_string,
+                look_ahead_char=self.look_ahead_char()
+            )
+
             if token_found:
                 if token_type == WHITESPACES:
                     if self.current_string == '\n':
@@ -74,13 +79,17 @@ class Scanner:
 
 class CompilerDFA:
     def __init__(self):
-        self.states = {0: 'start', 1: 'one_letter', 2: 'id_keyword_found', 3: 'one_digit', 4: 'digit_found',
-                       5: 'symbols_except_=_found', 6: '=', 7: '==_found', 8: '*', 9: '*_as_symbol_found',
-                       'a': '/', 'b': '//', 'c': 'comment_found', 'd': '/*', 'e': '/*_comment', 'f': 'white_space_found'
+        self.states = {0: 'start', 1: 'one_letter', 2: 'id_keyword_found',
+                       3: 'one_digit', 4: 'digit_found',
+                       5: 'symbols_except_=_found', 6: '=', 7: '==_found',
+                       8: '*', 9: '*_as_symbol_found',
+                       'a': '/', 'b': '//', 'c': 'comment_found', 'd': '/*',
+                       'e': '/*_comment', 'f': 'white_space_found'
                        }
         self.current_state = self.states[0]
 
-    def __call__(self, current_char, current_string, look_ahead_char, is_first_char=False, *args, **kwargs):
+    def __call__(self, current_char, current_string, look_ahead_char,
+                 is_first_char=False, *args, **kwargs):
         if self.current_state == self.states[0]:
             if current_char in ALPHABETS:
                 self.current_state = self.states[1]
