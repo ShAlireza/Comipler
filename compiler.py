@@ -135,6 +135,7 @@ class DFA:
 
     def __find(self, current_char, current_string):
         if self.start_char not in LANGUAGE:
+            self.start_char = ''
             raise WrongSyntaxError(word=current_string,
                                    message='Invalid input')
         if self.start_char == EOF:
