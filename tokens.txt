@@ -1,1 +1,1 @@
-1.	(ID, hello) 
+1.	(ID, hello) (KEYWORD, salam) 
