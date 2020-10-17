@@ -239,11 +239,6 @@ class DFA:
                                message='Invalid input')
 
     def __comment_regex(self, current_char, current_string):
-        if current_char == EOF:
-            self.start_char = ''
-            return Token(token_type=COMMENT,
-                         token_string=current_string), False
-
         if self.start_char == '/' and current_string == '//':
             self.comment_type = 1
         if self.start_char == '/' and current_string == '/*':

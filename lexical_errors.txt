@@ -1,2 +1,4 @@
-5.	(#, Invalid input) 
-23.	(void$, Invalid input) 
+2.	(*/, Unmatched comment) 
+13.	(/
+, Invalid input) 
+15.	(/*void ..., Unclosed comment) 
