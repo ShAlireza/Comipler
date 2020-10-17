@@ -188,7 +188,7 @@ class DFA:
                                message='Invalid input')
 
     def __symbol_regex(self, current_char, current_string):
-        if current_char not in '=*/':
+        if current_char not in '=*' and len(current_string) == 1:
             return Token(token_type=SYMBOL,
                          token_string=current_string), False
         if current_char == '/' and self.start_char == '*':
@@ -201,6 +201,10 @@ class DFA:
         if self.start_char == '=' and current_string == '=':
             return None, False
 
+        if self.start_char == '=' and current_char != '=':
+            return Token(token_type=SYMBOL,
+                         token_string='='), True
+
         if current_string == '==':
             return Token(token_type=SYMBOL,
                          token_string=current_string), False
@@ -210,10 +214,6 @@ class DFA:
             return Token(token_type=SYMBOL,
                          token_string='*'), True
 
-        if self.start_char == '=' and current_string != '=' \
-                and current_char in LANGUAGE:
-            return Token(token_type=SYMBOL,
-                         token_string='='), True
 
         raise WrongSyntaxError(word=current_string,
                                message='Invalid input')
