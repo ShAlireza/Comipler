@@ -173,10 +173,11 @@ class DFA:
                          token_string=current_string), False
         if current_char in DIGITS:
             return None, False
-        if current_char not in ALPHABETS and current_string not in LANGUAGE:
+        if current_char in PUNCTUATIONS + WHITESPACES:
             self.start_char = ''
             return Token(token_type=NUM,
                          token_string=current_string[:-1]), True
+
         raise WrongSyntaxError(word=current_string,
                                message='Invalid number')
 
@@ -385,5 +386,5 @@ class Scanner:
         self.symbol_table.write_on_file()
 
 
-scanner = Scanner('test.txt')
+scanner = Scanner('input.txt')
 scanner.simulate()
