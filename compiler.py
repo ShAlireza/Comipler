@@ -169,7 +169,7 @@ class DFA:
     def __num_regex(self, current_char, current_string):
         if current_char == EOF:
             return Token(token_type=NUM,
-                         token_string=current_string), True
+                         token_string=current_string), False
         if current_char in DIGITS:
             return None, False
         if current_char not in ALPHABETS and current_string not in LANGUAGE:
@@ -181,7 +181,7 @@ class DFA:
     def __id_keyword_regex(self, current_char, current_string):
         if current_char == EOF:
             return Token(token_type=KEYWORD,
-                         token_string=current_string), True
+                         token_string=current_string), False
         if current_char in ALPHANUMERICS:
             return None, False
         if current_char in LANGUAGE:
@@ -194,10 +194,10 @@ class DFA:
                                message='Invalid input')
 
     def __symbol_regex(self, current_char, current_string):
-
         if current_char == EOF:
             return Token(token_type=SYMBOL,
-                         token_string=current_string), True
+                         token_string=current_string), False
+
         if current_char not in '=*' and len(current_string) == 1:
             return Token(token_type=SYMBOL,
                          token_string=current_string), False
@@ -230,7 +230,7 @@ class DFA:
     def __comment_regex(self, current_char, current_string):
         if current_char == EOF:
             return Token(token_type=COMMENT,
-                         token_string=current_string), True
+                         token_string=current_string), False
 
         if self.start_char == '/' and current_string == '//':
             self.comment_type = 1
@@ -258,9 +258,6 @@ class DFA:
         return None, False
 
     def __white_space_regex(self, current_char, current_string):
-        if current_char == EOF:
-            return Token(token_type=WHITESPACE,
-                         token_string=current_string), True
         return Token(token_type=WHITESPACE,
                      token_string=current_string), False
 
@@ -353,7 +350,7 @@ class Scanner:
                 )
                 if char == EOF and not token:
                     return Token(token_type=END, token_string=char), new_line
-                print(token)
+                print(char == '\n', token, token.token_string == '' if token else False)
                 if char == '\n' and not look_ahead:
                     new_line = True
                 if look_ahead:
