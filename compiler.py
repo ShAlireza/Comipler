@@ -92,7 +92,7 @@ class SymbolTable(Table):
 class TokenTable(Table):
     TEMPLATE = '({token_type}, {token_string})'
 
-    def __init__(self, file_name='token_table', extension='txt'):
+    def __init__(self, file_name='tokens', extension='txt'):
         self.file_name = file_name
         self.extension = extension
         self.table = {}
@@ -299,9 +299,12 @@ class Scanner:
         self.finished = False
 
     def simulate(self):
+        counter = 0
         while True:
+            counter += 1
             token = self.get_next_token(simulation=True)
-            if self.finished:
+            print(token, counter)
+            if self.finished or not token:
                 self.__finish()
                 break
 
