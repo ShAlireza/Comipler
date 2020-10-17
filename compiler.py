@@ -168,11 +168,13 @@ class DFA:
 
     def __num_regex(self, current_char, current_string):
         if current_char == EOF:
+            self.start_char = ''
             return Token(token_type=NUM,
                          token_string=current_string), False
         if current_char in DIGITS:
             return None, False
         if current_char not in ALPHABETS and current_string not in LANGUAGE:
+            self.start_char = ''
             return Token(token_type=NUM,
                          token_string=current_string[:-1]), True
         raise WrongSyntaxError(word=current_string,
@@ -180,11 +182,13 @@ class DFA:
 
     def __id_keyword_regex(self, current_char, current_string):
         if current_char == EOF:
+            self.start_char = ''
             return Token(token_type=KEYWORD,
                          token_string=current_string), False
         if current_char in ALPHANUMERICS:
             return None, False
         if current_char in LANGUAGE:
+            self.start_char = ''
             if SymbolTable.is_keyword(current_string[:-1]):
                 return Token(token_type=KEYWORD,
                              token_string=current_string[:-1]), True
@@ -195,13 +199,16 @@ class DFA:
 
     def __symbol_regex(self, current_char, current_string):
         if current_char == EOF:
+            self.start_char = ''
             return Token(token_type=SYMBOL,
                          token_string=current_string), False
 
         if current_char not in '=*' and len(current_string) == 1:
+            self.start_char = ''
             return Token(token_type=SYMBOL,
                          token_string=current_string), False
         if current_char == '/' and self.start_char == '*':
+            self.start_char = ''
             raise WrongSyntaxError(word=current_string,
                                    message='Unmatched comment')
 
@@ -212,23 +219,28 @@ class DFA:
             return None, False
 
         if self.start_char == '=' and current_char != '=':
+            self.start_char = ''
             return Token(token_type=SYMBOL,
                          token_string='='), True
 
         if current_string == '==':
+            self.start_char = ''
             return Token(token_type=SYMBOL,
                          token_string=current_string), False
 
         if current_char != '/' and len(current_string) == 2 and \
                 current_string != '*/':
+            self.start_char = ''
             return Token(token_type=SYMBOL,
                          token_string='*'), True
 
+        self.start_char = ''
         raise WrongSyntaxError(word=current_string,
                                message='Invalid input')
 
     def __comment_regex(self, current_char, current_string):
         if current_char == EOF:
+            self.start_char = ''
             return Token(token_type=COMMENT,
                          token_string=current_string), False
 
@@ -239,25 +251,30 @@ class DFA:
         if self.start_char == '/' and len(current_string) == 2 \
                 and current_string not in ['//', '/*']:
             self.comment_type = 0
+            self.start_char = ''
             raise WrongSyntaxError(word=current_string,
                                    message='Invalid input')
 
         if self.comment_type == 1 and current_char in ['\n', EOF]:
             self.comment_type = 0
+            self.start_char = ''
             return Token(token_type=COMMENT,
                          token_string=current_string[:-1]), True
         if self.comment_type == 2 and current_char == '/' and \
                 current_string[-2:] == '*/':
             self.comment_type = 0
+            self.start_char = ''
             return Token(token_type=COMMENT,
                          token_string=current_string), False
         if self.comment_type == 2 and current_char == EOF:
             self.comment_type = 0
+            self.start_char = ''
             raise WrongSyntaxError(word=current_string[:7] + '...',
                                    message='Unclosed comment')
         return None, False
 
     def __white_space_regex(self, current_char, current_string):
+        self.start_char = ''
         return Token(token_type=WHITESPACE,
                      token_string=current_string), False
 
@@ -350,7 +367,6 @@ class Scanner:
                 )
                 if char == EOF and not token:
                     return Token(token_type=END, token_string=char), new_line
-                print(char == '\n', token, token.token_string == '' if token else False)
                 if char == '\n' and not look_ahead:
                     new_line = True
                 if look_ahead:
