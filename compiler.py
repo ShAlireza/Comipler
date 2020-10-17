@@ -247,7 +247,7 @@ class DFA:
                 and current_string not in ['//', '/*']:
             self.comment_type = 0
             self.start_char = ''
-            raise WrongSyntaxError(word=current_string,
+            raise WrongSyntaxError(word=current_string[:-1],
                                    message='Invalid input')
 
         if self.comment_type == 1 and current_char in ['\n', EOF]:
