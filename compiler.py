@@ -241,6 +241,10 @@ class DFA:
                                message='Invalid input')
 
     def __comment_regex(self, current_char, current_string):
+        if current_char == EOF and self.start_char == '/':
+            raise WrongSyntaxError(word='/',
+                                   message='Invalid input')
+
         if self.start_char == '/' and current_string == '//':
             self.comment_type = 1
         if self.start_char == '/' and current_string == '/*':
