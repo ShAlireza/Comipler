@@ -126,7 +126,6 @@ class DFA:
     def __call__(self, current_char, current_string,
                  is_first_char=False, *args, **kwargs):
         if is_first_char:
-            print(current_char)
             self.start_char = current_char
         answer = self.__find(
             current_char=current_char,
