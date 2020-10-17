@@ -186,7 +186,10 @@ class DFA:
     def __id_keyword_regex(self, current_char, current_string):
         if current_char == EOF:
             self.start_char = ''
-            return Token(token_type=KEYWORD,
+            if SymbolTable.is_keyword(current_string):
+                return Token(token_type=KEYWORD,
+                             token_string=current_string), False
+            return Token(token_type=ID,
                          token_string=current_string), False
         if current_char in ALPHANUMERICS:
             return None, False
