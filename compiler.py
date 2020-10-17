@@ -312,7 +312,7 @@ class Scanner:
             token, new_line = self.__get_next_token()
             if token.token_type == ID:
                 self.symbol_table.log(token.token_string)
-            if token.token_type not in [WHITESPACE, COMMENT]:
+            if token.token_type not in [WHITESPACE, COMMENT, END]:
                 self.token_table.log(token=token, line_number=self.line_number)
             self.buffer.clear()
             if token.token_type == END:

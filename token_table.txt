@@ -12,4 +12,4 @@
 13.	(ID, b) (SYMBOL, = ) (ID, a) (SYMBOL, <) (ID, cde) (SYMBOL, ;) 
 14.	(SYMBOL, {) (ID, cde) (SYMBOL, = ) (NUM, 2) (SYMBOL, ;) 
 15.	(SYMBOL, }) (SYMBOL, }) 
-16.	(KEYWORD, return) (SYMBOL, ;) (EOF, ) 
+16.	(KEYWORD, return) (SYMBOL, ;) 
