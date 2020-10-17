@@ -92,7 +92,7 @@ class SymbolTable(Table):
 class TokenTable(Table):
     TEMPLATE = '({token_type}, {token_string})'
 
-    def __init__(self, file_name='token_table', extension='txt'):
+    def __init__(self, file_name='tokens', extension='txt'):
         self.file_name = file_name
         self.extension = extension
         self.table = {}
