@@ -247,8 +247,7 @@ class DFA:
                 and current_string not in ['//', '/*']:
             self.comment_type = 0
             self.start_char = ''
-            raise WrongSyntaxError(word=current_string[:-1],
-                                   message='Invalid input')
+            return None, True
 
         if self.comment_type == 1 and current_char in ['\n', EOF]:
             self.comment_type = 0
@@ -360,12 +359,17 @@ class Scanner:
                     current_string=self.buffer.current_string,
                     is_first_char=self.buffer.is_first_char
                 )
+
                 if char == EOF and not token:
                     return Token(token_type=END, token_string=char), new_line
                 if char == '\n' and not look_ahead:
                     new_line = True
                 if look_ahead:
                     self.buffer.seek_prev()
+
+                if not token and look_ahead:
+                    raise WrongSyntaxError(word='/',
+                                           message='Invalid input')
                 if token:
                     return token, new_line
             except WrongSyntaxError as e:
