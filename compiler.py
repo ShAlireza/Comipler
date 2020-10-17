@@ -126,6 +126,7 @@ class DFA:
     def __call__(self, current_char, current_string,
                  is_first_char=False, *args, **kwargs):
         if is_first_char:
+            print(current_char)
             self.start_char = current_char
         answer = self.__find(
             current_char=current_char,
@@ -138,6 +139,7 @@ class DFA:
             self.start_char = ''
             raise WrongSyntaxError(word=current_string,
                                    message='Invalid input')
+
         if self.start_char == EOF:
             return None, False
 
@@ -242,6 +244,7 @@ class DFA:
 
     def __comment_regex(self, current_char, current_string):
         if current_char == EOF and self.start_char == '/':
+            self.start_char = ''
             raise WrongSyntaxError(word='/',
                                    message='Invalid input')
 
@@ -297,6 +300,8 @@ class Buffer:
 
     @property
     def is_first_char(self):
+        if len(self.current_string) == 1 and self.current_char == EOF:
+            return False
         return len(self.current_string) == 1
 
     def __read_char(self):
