@@ -100,7 +100,7 @@ class TokenTable(Table):
     def log(self, token: Token, line_number):
         message = self.TEMPLATE.format(
             token_type=token.token_type,
-            token_string=token.token_string.encode('unicode_escape')
+            token_string=token.token_string
         )
         try:
             self.table[line_number].append(message)
