@@ -303,8 +303,7 @@ class Scanner:
         while True:
             counter += 1
             token = self.get_next_token(simulation=True)
-            print(token, counter)
-            if self.finished or not token:
+            if self.finished:
                 self.__finish()
                 break
 
@@ -326,6 +325,7 @@ class Scanner:
         except WrongSyntaxError as e:
             self.buffer.clear()
             self.error_table.log(e, self.line_number)
+            return 1
 
     def __get_next_token(self):
         while True:
