@@ -315,9 +315,7 @@ class Scanner:
         self.finished = False
 
     def simulate(self):
-        counter = 0
         while True:
-            counter += 1
             token = self.get_next_token(simulation=True)
             if self.finished:
                 self.__finish()
