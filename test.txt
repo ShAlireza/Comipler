@@ -1,3 +1,1 @@
 hello $ salam
-
-if print
