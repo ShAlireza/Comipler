@@ -45,7 +45,7 @@ class ErrorTable(Table):
     def write_on_file(self):
         with open(f'{self.file_name}.{self.extension}', 'w') as file:
             for k, values in self.table.items():
-                file.write(f'line {k}: ')
+                file.write(f'{k}.\t')
                 for value in values:
                     file.write(f'{value} ')
                 file.write('\n')
@@ -71,7 +71,7 @@ class SymbolTable(Table):
     def write_on_file(self):
         with open(f'{self.file_name}.{self.extension}', 'w') as file:
             for k, value in self.table.items():
-                file.write(f'{k}: {value}\n')
+                file.write(f'{k}.\t{value}\n')
 
     def __install(self, item):
         self.__identifiers[self.id] = item
@@ -100,7 +100,7 @@ class TokenTable(Table):
     def log(self, token: Token, line_number):
         message = self.TEMPLATE.format(
             token_type=token.token_type,
-            token_string=token.token_string.encode('unicode_escape')
+            token_string=token.token_string
         )
         try:
             self.table[line_number].append(message)
@@ -111,7 +111,7 @@ class TokenTable(Table):
     def write_on_file(self):
         with open(f'{self.file_name}.{self.extension}', 'w') as file:
             for k, values in self.table.items():
-                file.write(f'{k}: ')
+                file.write(f'{k}.\t')
                 for value in values:
                     file.write(f'{value} ')
                 file.write('\n')
@@ -135,7 +135,8 @@ class DFA:
 
     def __find(self, current_char, current_string):
         if self.start_char not in LANGUAGE:
-            raise WrongSyntaxError
+            raise WrongSyntaxError(word=current_string,
+                                   message='Invalid input')
         if self.start_char == EOF:
             return None, False
 
@@ -187,7 +188,7 @@ class DFA:
                                message='Invalid input')
 
     def __symbol_regex(self, current_char, current_string):
-        if current_char != '=' and current_char != '*':
+        if current_char not in '=*/':
             return Token(token_type=SYMBOL,
                          token_string=current_string), False
         if current_char == '/' and self.start_char == '*':
@@ -239,7 +240,7 @@ class DFA:
                          token_string=current_string), False
         if self.comment_type == 2 and current_char == EOF:
             self.comment_type = 0
-            raise WrongSyntaxError(word=current_string[:11] + '...',
+            raise WrongSyntaxError(word=current_string[:7] + '...',
                                    message='Unclosed comment')
         return None, False
 
@@ -355,5 +356,5 @@ class Scanner:
         self.symbol_table.write_on_file()
 
 
-scanner = Scanner('../test.txt')
+scanner = Scanner('test.txt')
 scanner.simulate()

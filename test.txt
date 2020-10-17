@@ -1,9 +1,17 @@
-if (a == 1) {
-    return 1;
+void main ( void ) {
+    int a = 0;
+    // comment1
+    a = 2 + 2;
+    a = a - 3;
+    cde = a;
+    if (b /* comment2 */ == 3d) {
+        a = 3;
+        cd!e = 7;
+    }
+    else */
+    {
+        b = a < cde;
+        {cde = @2;
+    }}
+    return;/* comment 3
 }
-a$af
-a * b
-/ hello
-// hello world
-/* bye world */
-/* unclosed comment is here
