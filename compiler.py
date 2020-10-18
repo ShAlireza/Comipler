@@ -1,6 +1,48 @@
-from statics import *
-from exceptions import *
+DIGITS = '0123456789'
+ALPHABETS = 'abcdefghijklmnopqrstuvwxyz' + 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+ALPHANUMERICS = ALPHABETS + DIGITS
+WHITESPACES = ' \t\n\r\v\f'
+PUNCTUATIONS = ';:,[](){}+-*=<\\'
+COMMENTS = '/'
+LANGUAGE = DIGITS + ALPHABETS + PUNCTUATIONS + COMMENTS + WHITESPACES
+LOOK_AHEAD = {'look_ahead'}
+RESERVED_WORDS = ('if', 'else', 'void', 'int', 'while', 'break', 'switch',
+                  'default', 'case', 'return')
 
+NUM = 'NUM'
+ID = 'ID'
+KEYWORD = 'KEYWORD'
+SYMBOL = 'SYMBOL'
+COMMENT = 'COMMENT'
+WHITESPACE = 'WHITESPACE'
+
+EOF = ''
+END = 'EOF'
+
+
+class CompileError(Exception):
+    pass
+
+
+class BufferSizeExceeded(CompileError):
+
+    def __init__(self, max_size=4096, message='buffer maximum size exceeded,'
+                                              ' max size is {}'):
+        self.max_size = max_size
+        self.message = message.format(self.max_size)
+        super().__init__(self.message)
+
+
+class WrongSyntaxError(CompileError):
+
+    def __init__(self, line_number=0, word='',
+                 message=''):
+        self.line_number = line_number
+        self.word = word
+        default_message = 'wrong syntax in line {}, word {}'
+        self.message = (default_message.format(line_number, word)
+                        if not message else message)
+        super().__init__(self.message)
 
 class Token:
 
@@ -79,8 +121,6 @@ class SymbolTable(Table):
         return True
 
     def __init(self):
-        from statics import RESERVED_WORDS
-
         for word in RESERVED_WORDS:
             self.log(word)
 
@@ -245,7 +285,7 @@ class DFA:
                                message='Invalid input')
 
     def __comment_regex(self, current_char, current_string):
-        if current_char == EOF and self.start_char == '/':
+        if current_char == EOF and self.start_char == '/' and len(current_string) == 1:
             self.start_char = ''
             raise WrongSyntaxError(word='/',
                                    message='Invalid input')
@@ -260,11 +300,16 @@ class DFA:
             self.start_char = ''
             return None, True
 
-        if self.comment_type == 1 and current_char in ['\n', EOF]:
+        if self.comment_type == 1 and current_char in ['\n']:
             self.comment_type = 0
             self.start_char = ''
             return Token(token_type=COMMENT,
                          token_string=current_string[:-1]), True
+        if self.comment_type == 1 and current_char in [EOF]:
+            self.comment_type = 0
+            self.start_char = ''
+            return Token(token_type=COMMENT,
+                         token_string=current_string[:-1]), False
         if self.comment_type == 2 and current_char == '/' and \
                 current_string[-2:] == '*/':
             self.comment_type = 0
