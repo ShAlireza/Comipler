@@ -44,6 +44,7 @@ class WrongSyntaxError(CompileError):
                         if not message else message)
         super().__init__(self.message)
 
+
 class Token:
 
     def __init__(self, token_type, token_string):
@@ -86,6 +87,8 @@ class ErrorTable(Table):
 
     def write_on_file(self):
         with open(f'{self.file_name}.{self.extension}', 'w') as file:
+            if len(self.table.items()) == 0:
+                file.write("There is no lexical error.")
             for k, values in self.table.items():
                 file.write(f'{k}.\t')
                 for value in values:
