@@ -63,6 +63,11 @@ class Token:
     def __str__(self):
         return f'({self.token_type}, {self.token_string})'
 
+    def get_token_type(self):
+        return f'({self.token_type})'
+
+    def get_token_string(self):
+        return f'({self.token_string})'
 
 class Table:
 
