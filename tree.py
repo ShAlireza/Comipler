@@ -1,7 +1,7 @@
 from anytree import Node, RenderTree
 
 
-class stack:
+class Stack:
     def __init__(self):
         self.data = []
 
@@ -24,11 +24,11 @@ class stack:
         return len(self.data)
 
 
-class tree:
+class Tree:
     def __init__(self):
         self.id = 0
-        self.parents_stack = stack()
-        self.children_stack = stack()
+        self.parents_stack = Stack()
+        self.children_stack = Stack()
         self.root = Node('program')
         self.current_node = self.root
 

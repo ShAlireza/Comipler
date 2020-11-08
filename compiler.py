@@ -69,6 +69,7 @@ class Token:
     def get_token_string(self):
         return f'({self.token_string})'
 
+
 class Table:
 
     def log(self, *args, **kwargs):

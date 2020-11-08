@@ -4,16 +4,16 @@ import scanner
 
 import tree
 
-
-stack_parse = tree.stack()
+stack_parse = tree.Stack()
 non_terminals = []
 terminals = ['if', 'else', 'void', 'int', 'while', 'break', 'switch',
-             'default', 'case', 'return', 'ID', 'NUM', ';', ':', ',', '[', ']', '(', ')', '{', '}', '+', '-', '*', '=',
+             'default', 'case', 'return', 'ID', 'NUM', ';', ':', ',', '[', ']',
+             '(', ')', '{', '}', '+', '-', '*', '=',
              '<', '==', '$', '/']
 parse_table = {}
 firsts = {}
 follows = {}
-parse_tree = tree.tree()
+parse_tree = tree.Tree()
 
 
 # besides that it computes terminal states ####
@@ -32,7 +32,8 @@ def fill_first_dict():
             firsts[words[0]] = words[1:]
 
 
-def compute_first(expression):  # expression would be something like "[ NoneTerminal ] +"
+def compute_first(
+        expression):  # expression would be something like "[ NoneTerminal ] +"
     words = expression.split()
     answer = []
     flag = True
@@ -74,6 +75,43 @@ initial_parse_table()
 stack_parse.push('$')
 stack_parse.push('program')
 current_token = scanner.get_next_token_for_parser()
+
+
+class Table:
+
+    def log(self, *args, **kwargs):
+        raise NotImplementedError("Method not implemented")
+
+    def write_on_file(self, *args, **kwargs):
+        raise NotImplementedError("Method not implemented")
+
+
+class ErrorTable(Table):
+    TEMPLATE = '#{line} : syntax error, {message}'
+
+    def __init__(self, file_name='syntax_errors', extension='txt'):
+        self.file_name = file_name
+        self.extension = extension
+        self.id = 0
+        self.table = {}
+
+    def log(self, error_message, line_number):
+        message = self.TEMPLATE.format(line=line_number,
+                                       message=error_message)
+        try:
+            self.table[line_number].append(message)
+        except KeyError as e:
+            self.table[line_number] = []
+            self.table[line_number].append(message)
+
+    def write_on_file(self):
+        with open(f'{self.file_name}.{self.extension}', 'w') as file:
+            if len(self.table.items()) == 0:
+                file.write("There is no syntax error.")
+            for values in self.table.values():
+                for value in values:
+                    file.write(f'{value}\n')
+
 
 while True:
     if current_token[0] == '$' and stack_parse.peak() == '$':
