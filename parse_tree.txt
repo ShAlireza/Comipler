@@ -1,1 +1,5 @@
-start
+Node('/start')
+├── Node('/start/1')
+├── Node('/start/2')
+├── Node('/start/3')
+└── Node('/start/khar', line=1)
