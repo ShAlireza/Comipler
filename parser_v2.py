@@ -73,14 +73,18 @@ class Parser:
 
     def __parse(self):
         while True:
+            print(self.current_token, self.stack_parse.show_all())
             if self.current_token[0] == '$' and self.stack_parse.peak() == '$':
+                print(1)
                 break
             elif self.stack_parse.peak() in self.terminals:
                 if self.current_token[0] == 'ID' or self.current_token[0] == 'NUM':
                     if self.stack_parse.peak() == self.current_token[0]:
+                        print(2)
                         self.stack_parse.pop()
                         self.parse_tree.add_node_to_tree()
                     else:
+                        print(3)
                         self.parse_tree.add_node_to_tree()
                         term = (self.current_token
                                 if self.current_token != '$' else 'EOF')
@@ -89,9 +93,11 @@ class Parser:
 
                 else:
                     if self.stack_parse.peak() == self.current_token[1]:
+                        print(4)
                         self.stack_parse.pop()
                         self.parse_tree.add_node_to_tree()
                     else:
+                        print(5)
                         self.parse_tree.add_node_to_tree()
                         term = (self.current_token
                                 if self.current_token != '$' else 'EOF')
@@ -102,12 +108,14 @@ class Parser:
                 if self.current_token[0] == 'ID' or self.current_token[0] == 'NUM':
                     if self.current_token[0] in self.parse_table[self.stack_parse.peak()]:
                         if self.parse_table[self.stack_parse.peak()][self.current_token[0]] == 'synch':
+                            print(6)
                             self.parse_tree.add_node_to_tree()
                             self.stack_parse.pop()
                             self.error_table.log(
                                 error_message=f'missing {self.current_token}',
                                 line_number=scanner.line_num)
                         else:
+                            print(7)
                             NT = self.stack_parse.pop()
                             states = self.parse_table[NT][self.current_token[1]]
                             if NT != 'Program':
@@ -120,6 +128,7 @@ class Parser:
                             for k in ste:
                                 self.stack_parse.push(k)
                     else:
+                        print(8)
                         self.current_token = scanner.get_next_token_for_parser()
                         self.error_table.log(
                             error_message=f'illegal {self.current_token}',
@@ -127,12 +136,14 @@ class Parser:
                 if self.current_token[0] == 'KEYWORD' or self.current_token[0] == 'SYMBOL':
                     if self.current_token[1] in self.parse_table[self.stack_parse.peak()]:
                         if self.parse_table[self.stack_parse.peak()][self.current_token[1]] == 'synch':
+                            print(9)
                             self.parse_tree.add_node_to_tree()
                             self.stack_parse.pop()
                             self.error_table.log(
                                 error_message=f'missing {self.current_token}',
                                 line_number=scanner.line_num)
                         else:
+                            print(10)
                             NT = self.stack_parse.pop()
                             states = self.parse_table[NT][self.current_token[1]]
                             if NT != 'Program':
@@ -145,6 +156,7 @@ class Parser:
                             for k in ste:
                                 self.stack_parse.push(k)
                     else:
+                        print(11)
                         self.current_token = scanner.get_next_token_for_parser()
                         self.error_table.log(
                             error_message=f'illegal {self.current_token}',
