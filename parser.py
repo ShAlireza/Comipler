@@ -1,8 +1,6 @@
-"parser for C_Minus"
-'#################################'
+from anytree import Node
 
-import compiler
-from anytree import Node, RenderTree
+import scanner
 
 
 class stack:
@@ -34,7 +32,8 @@ terminals = ['if', 'else', 'void', 'int', 'while', 'break', 'switch',
 parse_table = {}
 firsts = {}
 follows = {}
-scanner = compiler.Scanner('input.txt')
+parse_tree = Node('Program')
+parse_tree.children
 
 
 # besides that it computes terminal states ####
@@ -94,21 +93,21 @@ fill_first_dict()
 initial_parse_table()
 stack_parse.push('$')
 while True:
-    current_token = scanner.get_next_token()
-    if current_token.type == '$' and stack_parse.peak() == '$':
+    current_token = scanner.get_next_token_for_parser()
+    if current_token[0] == '$' and stack_parse.peak() == '$':
         break
-    elif current_token.type == stack_parse.peak():
+    elif current_token[0] == stack_parse.peak():
         stack_parse.pop()
         continue
         # \todo
     elif stack_parse.peak() in non_terminals:
-        if current_token.type in parse_table[stack_parse.peak()]:
+        if current_token[0] in parse_table[stack_parse.peak()]:
 
-            if parse_table[stack_parse.peak()][current_token.type] == 'synch':
+            if parse_table[stack_parse.peak()][current_token[0]] == 'synch':
                 pass  # \todo
 
             NT = parse_table.pop()
-            states = parse_table[NT][current_token.type]
+            states = parse_table[NT][current_token[0]]
             states = states[::-1]  # states.inverse
             for k in states:
                 stack_parse.push(k)
@@ -118,4 +117,3 @@ while True:
     else:
         pass
         #  \todo
-

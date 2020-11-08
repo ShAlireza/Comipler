@@ -1,10 +1,8 @@
-string = "[ EXPRESSION } ID +"
-word = string.strip().split()
-stri = ' '.join(word)
-print(stri)
+from anytree import Node, RenderTree
 
-a = {'a': 1, 'r': 'b'}
-if 'r' in a:
-    print("fuck")
+p = Node('start', children=[Node('1'), Node('2'), Node('3')])
+x = Node('khar', line=1, parent=p)
+print(RenderTree(p))
+
 
 
