@@ -149,7 +149,6 @@ class Parser:
                             self.error_table.log(
                                 error_message=f'missing {self.current_token}',
                                 line_number=scanner.line_num)
-                            break
                         else:
                             print(10)
                             NT = self.stack_parse.pop()
@@ -177,11 +176,11 @@ class Parser:
 
     def compute_first(self, expression):
         # expression would be something like "[ NoneTerminal ] +"
-        words = expression.split()
+        words = expression.split(' ')
         answer = []
         flag = True
         for word in words:
-            if '$' in word or '#&' in word:
+            if word == '#&':
                 continue
             for x in self.firsts[word]:
                 answer.append(x)
@@ -192,9 +191,7 @@ class Parser:
                 break
         if flag:
             answer.append('#&')
-        answer = set(answer)
-        answer = list(answer)
-        return answer
+        return list(answer)
 
     def fill_follow_dict(self):
         with open("Follows.csv", 'r') as file:
@@ -209,7 +206,7 @@ class Parser:
                 words = line.strip().split(' ')
                 self.firsts[words[0]] = words[1:]
         for x in self.terminals:
-            self.firsts[x] = x
+            self.firsts[x] = [x]
 
     def initial_parse_table(self):
         for NT in self.non_terminals:
@@ -217,10 +214,12 @@ class Parser:
             # for T in terminals:
             #     parse_table[NT][T] = None
         with open('Grammar.csv', 'r') as file:
-            for line in file.readlines():
+            w = file.readlines()
+            for line in w:
                 words = line.strip().split()
                 for i in range(1, len(words)):
                     f = self.compute_first(' '.join(words[1:]))
+                    print(f, ' '.join(words[1:]))
                     for ter in f:
                         if ter != '#&':
                             self.parse_table[words[0]][ter] = ' '.join(words[1:])
