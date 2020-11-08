@@ -41,5 +41,5 @@ class Tree:
         self.current_node = self.children_stack.peak()
 
     def write_tree(self):
-        with open('parse_tree.txt', 'wb') as file:
-            file.write(RenderTree(self.root))
+        with open('parse_tree.txt' , 'w', newline='',encoding="utf-8") as csv_file:
+            csv_file.write(RenderTree(self.root).__str__())
