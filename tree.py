@@ -33,15 +33,21 @@ class Tree:
         self.current_node = self.root
 
     def add_node_to_tree(self):
-        self.children_stack.pop().parent = self.parents_stack.pop()
+        print(f'Adding node {self.children_stack.peak()} to tree')
+        print(self.children_stack.show_all(), self.parents_stack.show_all())
+        child = self.children_stack.pop()
+        child.parent = self.parents_stack.pop()
+        print(child, child.parent)
         self.current_node = self.children_stack.peak()
         print("#####################")
         print(RenderTree(self.root))
 
     def add_nodes_to_stacks(self, node_names):
+        print(node_names, '<=== node names')
         for node_name in node_names:
             self.children_stack.push(Node(node_name))
             self.parents_stack.push(self.current_node)
+        print(self.parents_stack.show_all(), '<==== parents')
         self.current_node = self.children_stack.peak()
 
     def write_tree(self):

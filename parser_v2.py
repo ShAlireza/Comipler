@@ -73,7 +73,9 @@ class Parser:
 
     def __parse(self):
         while True:
-            print(self.current_token, self.stack_parse.show_all())
+            print("==========================================")
+            print(f'CurrentToken: {self.current_token}',
+                  f'CurrentStackParse: {self.stack_parse.show_all()}')
             if self.current_token[0] == '$' and self.stack_parse.peak() == '$':
                 print(1)
                 break
@@ -85,6 +87,7 @@ class Parser:
                         self.parse_tree.add_node_to_tree()
                     else:
                         print(3)
+                        self.stack_parse.pop()
                         self.parse_tree.add_node_to_tree()
                         term = (self.current_token
                                 if self.current_token != '$' else 'EOF')
@@ -98,6 +101,7 @@ class Parser:
                         self.parse_tree.add_node_to_tree()
                     else:
                         print(5)
+                        self.stack_parse.pop()
                         self.parse_tree.add_node_to_tree()
                         term = (self.current_token
                                 if self.current_token != '$' else 'EOF')
@@ -142,6 +146,7 @@ class Parser:
                             self.error_table.log(
                                 error_message=f'missing {self.current_token}',
                                 line_number=scanner.line_num)
+                            break
                         else:
                             print(10)
                             NT = self.stack_parse.pop()
@@ -150,8 +155,10 @@ class Parser:
                                 self.parse_tree.add_node_to_tree()
                             states = list(states.split())
                             ste = [0] * len(states)
+                            print(states, 'states')
                             for i in range(len(states)):
                                 ste[i] = states[len(states) - i - 1]
+                            print(ste, 'ste')
                             self.parse_tree.add_nodes_to_stacks(ste)
                             for k in ste:
                                 self.stack_parse.push(k)
@@ -161,6 +168,7 @@ class Parser:
                         self.error_table.log(
                             error_message=f'illegal {self.current_token}',
                             line_number=scanner.line_num)
+            print("==========================================")
 
     def compute_first(self, expression):
         # expression would be something like "[ NoneTerminal ] +"
