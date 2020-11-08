@@ -84,8 +84,10 @@ class Parser:
                 self.parse_tree.add_node_to_tree()
                 self.current_token = scanner.get_next_token_for_parser()
             elif self.stack_parse.peak() in self.non_terminals:
-                if self.current_token[1] in self.parse_table[self.stack_parse.peak()]:
-                    if self.parse_table[self.stack_parse.peak()][self.current_token[1]] == 'synch':
+                if self.current_token[1] in self.parse_table[
+                    self.stack_parse.peak()]:
+                    if self.parse_table[self.stack_parse.peak()][
+                        self.current_token[1]] == 'synch':
                         print(3)
                         self.parse_tree.add_node_to_tree()
                         self.error_table.log(
@@ -98,7 +100,7 @@ class Parser:
                         if NT != 'Program':
                             self.parse_tree.add_node_to_tree()
                         states = list(states.split())
-                        ste = [0]*len(states)
+                        ste = [0] * len(states)
                         for i in range(len(states)):
                             ste[i] = states[len(states) - i - 1]
                         self.parse_tree.add_nodes_to_stacks(ste)
@@ -166,14 +168,15 @@ class Parser:
                     f = self.compute_first(' '.join(words[1:]))
                     for ter in f:
                         if ter != '#&':
-                            self.parse_table[words[0]][ter] = ' '.join(words[1:])
+                            self.parse_table[words[0]][ter] = ' '.join(
+                                words[1:])
                         else:
                             for t in self.follows[words[0]]:
-                                self.parse_table[words[0]][t] = ' '.join(words[1:])
+                                self.parse_table[words[0]][t] = ' '.join(
+                                    words[1:])
         for NT in self.non_terminals:
             for t_prime in self.follows[NT]:
                 self.parse_table[NT][t_prime] = 'synch'
-
 
 
 parser = Parser()
