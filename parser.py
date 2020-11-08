@@ -99,12 +99,12 @@ while True:
     elif current_token[0] == stack_parse.peak():
         stack_parse.pop()
         continue
-        # \todo
+        # \todo وقتی که هم توکن پیدا شده هم تو استکه
     elif stack_parse.peak() in non_terminals:
         if current_token[0] in parse_table[stack_parse.peak()]:
 
             if parse_table[stack_parse.peak()][current_token[0]] == 'synch':
-                pass  # \todo
+                pass  # \todo وقتی که سینک بخوره پنیک ارور
 
             NT = parse_table.pop()
             states = parse_table[NT][current_token[0]]
@@ -113,7 +113,7 @@ while True:
                 stack_parse.push(k)
         else:
             pass
-            #  \todo
+            #  \todo وقتی که خونه پارس تیبل خالی باشه
     else:
         pass
-        #  \todo
+        #  \todo وقتی که توکنه رو استک یه ترمینال باشه
