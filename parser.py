@@ -2,29 +2,10 @@ from anytree import Node
 
 import scanner
 
-
-class stack:
-    def __init__(self):
-        self.data = []
-
-    def push(self, x):
-        return self.data.append(x)
-
-    def pop(self):
-        return self.data.pop()
-
-    def peak(self):
-        return self.data[-1]
-
-    def contains(self, x):
-        return self.data.count(x)
-
-    def show_all(self):
-        return self.data
+import tree
 
 
-stack_parse = stack()
-current_token = None
+stack_parse = tree.stack()
 non_terminals = []
 terminals = ['if', 'else', 'void', 'int', 'while', 'break', 'switch',
              'default', 'case', 'return', 'ID', 'NUM', ';', ':', ',', '[', ']', '(', ')', '{', '}', '+', '-', '*', '=',
@@ -32,8 +13,7 @@ terminals = ['if', 'else', 'void', 'int', 'while', 'break', 'switch',
 parse_table = {}
 firsts = {}
 follows = {}
-parse_tree = Node('Program')
-parse_tree.children
+parse_tree = tree.tree()
 
 
 # besides that it computes terminal states ####
@@ -92,25 +72,29 @@ fill_follow_dict()
 fill_first_dict()
 initial_parse_table()
 stack_parse.push('$')
+stack_parse.push('program')
+current_token = scanner.get_next_token_for_parser()
+
 while True:
-    current_token = scanner.get_next_token_for_parser()
     if current_token[0] == '$' and stack_parse.peak() == '$':
         break
     elif current_token[0] == stack_parse.peak():
         stack_parse.pop()
-        continue
-        # \todo
+        parse_tree.add_node_to_tree()
+        current_token = scanner.get_next_token_for_parser()
     elif stack_parse.peak() in non_terminals:
         if current_token[0] in parse_table[stack_parse.peak()]:
-
             if parse_table[stack_parse.peak()][current_token[0]] == 'synch':
                 pass  # \todo
-
-            NT = parse_table.pop()
-            states = parse_table[NT][current_token[0]]
-            states = states[::-1]  # states.inverse
-            for k in states:
-                stack_parse.push(k)
+                continue
+            else:
+                NT = stack_parse.pop()
+                states = parse_table[NT][current_token[0]]
+                parse_tree.add_node_to_tree()
+                states = states[::-1]  # states.inverse
+                for k in states:
+                    parse_tree.add_nodes_to_stacks(k)
+                    stack_parse.push(k)
         else:
             pass
             #  \todo

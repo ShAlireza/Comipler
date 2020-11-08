@@ -146,4 +146,3 @@ def get_next_token_for_parser():
             return token
         else:
             return token
-
