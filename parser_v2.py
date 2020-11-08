@@ -103,6 +103,7 @@ class Parser:
                     if self.current_token[0] in self.parse_table[self.stack_parse.peak()]:
                         if self.parse_table[self.stack_parse.peak()][self.current_token[0]] == 'synch':
                             self.parse_tree.add_node_to_tree()
+                            self.stack_parse.pop()
                             self.error_table.log(
                                 error_message=f'missing {self.current_token}',
                                 line_number=scanner.line_num)
@@ -127,6 +128,7 @@ class Parser:
                     if self.current_token[1] in self.parse_table[self.stack_parse.peak()]:
                         if self.parse_table[self.stack_parse.peak()][self.current_token[1]] == 'synch':
                             self.parse_tree.add_node_to_tree()
+                            self.stack_parse.pop()
                             self.error_table.log(
                                 error_message=f'missing {self.current_token}',
                                 line_number=scanner.line_num)
@@ -147,6 +149,7 @@ class Parser:
                         self.error_table.log(
                             error_message=f'illegal {self.current_token}',
                             line_number=scanner.line_num)
+
 
     def compute_first(self, expression):
         # expression would be something like "[ NoneTerminal ] +"
@@ -203,7 +206,6 @@ class Parser:
         for NT in self.non_terminals:
             for t_prime in self.follows[NT]:
                 self.parse_table[NT][t_prime] = 'synch'
-
 
 
 parser = Parser()
