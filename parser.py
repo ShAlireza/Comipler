@@ -113,6 +113,8 @@ class ErrorTable(Table):
                     file.write(f'{value}\n')
 
 
+error_table = ErrorTable()
+
 while True:
     if current_token[0] == '$' and stack_parse.peak() == '$':
         break
@@ -124,7 +126,8 @@ while True:
         if current_token[0] in parse_table[stack_parse.peak()]:
             if parse_table[stack_parse.peak()][current_token[0]] == 'synch':
                 parse_tree.add_node_to_tree()
-                # \error safheye 24 khat 2
+                error_table.log(error_message=f'missing {current_token}',
+                                line_number=scanner.line_num)
             else:
                 NT = stack_parse.pop()
                 states = parse_table[NT][current_token[0]]
@@ -135,8 +138,10 @@ while True:
                     stack_parse.push(k)
         else:
             pass
-            # error safheye 24 khat 1
+            error_table.log(error_message=f'illegal {current_token}',
+                            line_number=scanner.line_num)
     else:
         parse_tree.add_node_to_tree()
-        # error safheye 24 kht 3
-
+        term = current_token if current_token != '$' else 'EOF'
+        error_table.log(error_message=f'unexpected {term}',
+                        line_number=scanner.line_num)
