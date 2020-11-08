@@ -39,12 +39,12 @@ def compute_first(
     flag = True
     for word in words:
         answer.append(firsts[word])
-        answer.remove('ε')
-        if 'ε' not in firsts[word]:
+        answer.remove('#&')
+        if '#&' not in firsts[word]:
             flag = False
             break
     if flag:
-        answer.append('ε')
+        answer.append('#&')
     return answer
 
 
@@ -58,7 +58,7 @@ def initial_parse_table():
             words = line.strip().split()
             for i in range(1, len(words)):
                 for ter in compute_first(str(*words[1:])):
-                    if ter != 'ε':
+                    if ter != '#&':
                         parse_table[words[0]][ter] = ' '.join(words)
                     else:
                         for t in follows[words[0]]:

@@ -1,5 +1,5 @@
 Program $ int void
-Declaration-list ε int void
+Declaration-list #& int void
 Declaration int void
 Declaration-initial int void
 Declaration-prime ( ; [
@@ -7,12 +7,12 @@ Var-declaration-prime ; [
 Fun-declaration-prime (
 Type-specifier int void
 Params int void
-Param-list-void-abtar ID ε
-Param-list , ε
+Param-list-void-abtar ID #&
+Param-list , #&
 Param int void
-Param-prime [ ε
+Param-prime [ #&
 Compound-stmt {
-Statement-list ε { break ; if while return switch ID + - ( NUM
+Statement-list #& { break ; if while return switch ID + - ( NUM
 Statement { break ; if while return switch ID + - ( NUM
 Expression-stmt break ; ID + - ( NUM
 Selection-stmt if
@@ -20,33 +20,33 @@ Iteration-stmt while
 Return-stmt return
 Return-stmt-prime ; ID + - ( NUM
 Switch-stmt switch
-Case-stmts ε case
+Case-stmts #& case
 Case-stmt case
-Default-stmt default ε
+Default-stmt default #&
 Expression ID + - ( NUM
-B = [ ( * + - < == ε
-H = * ε + - < ==
+B = [ ( * + - < == #&
+H = * #& + - < ==
 Simple-expression-zegond + - ( NUM
-Simple-expression-prime ( * + - < == ε
-C ε < ==
+Simple-expression-prime ( * + - < == #&
+C #& < ==
 Relop < ==
 Additive-expression + - ( ID NUM
-Additive-expression-prime ( * + - ε
+Additive-expression-prime ( * + - #&
 Additive-expression-zegond + - ( NUM
-D ε + -
+D #& + -
 Addop + -
 Term + - ( ID NUM
-Term-prime ( * ε
+Term-prime ( * #&
 Term-zegond + - ( NUM
-G * ε
+G * #&
 Signed-factor + - ( ID NUM
-Signed-factor-prime ( ε
+Signed-factor-prime ( #&
 Signed-factor-zegond + - ( NUM
 Factor ( ID NUM
-Var-call-prime ( [ ε
-Var-prime [ ε
-Factor-prime ( ε
+Var-call-prime ( [ #&
+Var-prime [ #&
+Factor-prime ( #&
 Factor-zegond ( NUM
-Args ε ID + - ( NUM
+Args #& ID + - ( NUM
 Arg-list ID + - ( NUM
-Arg-list-prime , ε
+Arg-list-prime , #&

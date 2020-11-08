@@ -138,10 +138,10 @@ def get_next_token_for_parser():
             errors[line_num] += ' ' + generate_error(token)
         else:
             errors[line_num] = generate_error(token)
-        get_next_token_for_parser()
+        return get_next_token_for_parser()
     else:
         if token[0] == 'WHITESPACE' or token[0] == 'COMMENT':
-            get_next_token_for_parser()
+            return get_next_token_for_parser()
         if line_num in tokens.keys():
             return token
         else:
