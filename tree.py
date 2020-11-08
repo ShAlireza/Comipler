@@ -33,10 +33,8 @@ class Tree:
         self.current_node = self.root
 
     def add_node_to_tree(self):
-        self.children_stack.pop().parent = self.parents_stack.pop()
         self.current_node = self.children_stack.peak()
-        print("#####################")
-        print(RenderTree(self.root))
+        self.children_stack.pop().parent = self.parents_stack.pop()
 
     def add_nodes_to_stacks(self, node_names):
         for node_name in node_names:

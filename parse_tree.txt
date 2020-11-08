@@ -1,4 +1,3 @@
 Node('/Program')
 └── Node('/Program/Declaration-list')
     └── Node('/Program/Declaration-list/Declaration')
-        └── Node('/Program/Declaration-list/Declaration/Declaration-initial')

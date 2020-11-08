@@ -76,6 +76,9 @@ class Parser:
             print("==========================================")
             print(f'CurrentToken: {self.current_token}',
                   f'CurrentStackParse: {self.stack_parse.show_all()}')
+            print("children_stack", self.parse_tree.parents_stack.show_all())
+            print("parents_stack", self.parse_tree.children_stack.show_all())
+            print("stack", self.stack_parse.show_all())
             if self.current_token[0] == '$' and self.stack_parse.peak() == '$':
                 print(1)
                 break
@@ -121,13 +124,13 @@ class Parser:
                         else:
                             print(7)
                             NT = self.stack_parse.pop()
-                            states = self.parse_table[NT][self.current_token[1]]
-                            if NT != 'Program':
-                                self.parse_tree.add_node_to_tree()
+                            states = self.parse_table[NT][self.current_token[0]]
                             states = list(states.split())
                             ste = [0] * len(states)
                             for i in range(len(states)):
                                 ste[i] = states[len(states) - i - 1]
+                            if NT != 'Program':
+                                self.parse_tree.add_node_to_tree()
                             self.parse_tree.add_nodes_to_stacks(ste)
                             for k in ste:
                                 self.stack_parse.push(k)
@@ -151,14 +154,12 @@ class Parser:
                             print(10)
                             NT = self.stack_parse.pop()
                             states = self.parse_table[NT][self.current_token[1]]
-                            if NT != 'Program':
-                                self.parse_tree.add_node_to_tree()
                             states = list(states.split())
                             ste = [0] * len(states)
-                            print(states, 'states')
                             for i in range(len(states)):
                                 ste[i] = states[len(states) - i - 1]
-                            print(ste, 'ste')
+                            if NT != 'Program':
+                                self.parse_tree.add_node_to_tree()
                             self.parse_tree.add_nodes_to_stacks(ste)
                             for k in ste:
                                 self.stack_parse.push(k)
@@ -168,6 +169,10 @@ class Parser:
                         self.error_table.log(
                             error_message=f'illegal {self.current_token}',
                             line_number=scanner.line_num)
+
+            print("children_stack", self.parse_tree.parents_stack.show_all())
+            print("parents_stack", self.parse_tree.children_stack.show_all())
+            print("stack", self.stack_parse.show_all())
             print("==========================================")
 
     def compute_first(self, expression):
