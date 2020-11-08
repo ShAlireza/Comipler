@@ -73,52 +73,80 @@ class Parser:
 
     def __parse(self):
         while True:
-            if self.current_token[1] == '$':
+            if self.current_token[0] == '$' and self.stack_parse.peak() == '$':
                 break
-            if self.current_token[1] == '$' and self.stack_parse.peak() == '$':
-                print(1)
-                break
-            elif self.current_token[1] == self.stack_parse.peak():
-                print(2)
-                self.stack_parse.pop()
-                self.parse_tree.add_node_to_tree()
-                self.current_token = scanner.get_next_token_for_parser()
-            elif self.stack_parse.peak() in self.non_terminals:
-                if self.current_token[1] in self.parse_table[
-                    self.stack_parse.peak()]:
-                    if self.parse_table[self.stack_parse.peak()][
-                        self.current_token[1]] == 'synch':
-                        print(3)
+            elif self.stack_parse.peak() in self.terminals:
+                if self.current_token[0] == 'ID' or self.current_token[0] == 'NUM':
+                    if self.stack_parse.peak() == self.current_token[0]:
+                        self.stack_parse.pop()
                         self.parse_tree.add_node_to_tree()
-                        self.error_table.log(
-                            error_message=f'missing {self.current_token}',
-                            line_number=scanner.line_num)
                     else:
-                        print(4)
-                        NT = self.stack_parse.pop()
-                        states = self.parse_table[NT][self.current_token[1]]
-                        if NT != 'Program':
-                            self.parse_tree.add_node_to_tree()
-                        states = list(states.split())
-                        ste = [0] * len(states)
-                        for i in range(len(states)):
-                            ste[i] = states[len(states) - i - 1]
-                        self.parse_tree.add_nodes_to_stacks(ste)
-                        for k in ste:
-                            self.stack_parse.push(k)
+                        self.parse_tree.add_node_to_tree()
+                        term = (self.current_token
+                                if self.current_token != '$' else 'EOF')
+                        self.error_table.log(error_message=f'unexpected {term}',
+                                             line_number=scanner.line_num)
+
                 else:
-                    print(5)
-                    self.current_token = scanner.get_next_token_for_parser()
-                    self.error_table.log(
-                        error_message=f'illegal {self.current_token}',
-                        line_number=scanner.line_num)
-            else:
-                print(6)
-                self.parse_tree.add_node_to_tree()
-                term = (self.current_token
-                        if self.current_token != '$' else 'EOF')
-                self.error_table.log(error_message=f'unexpected {term}',
-                                     line_number=scanner.line_num)
+                    if self.stack_parse.peak() == self.current_token[1]:
+                        self.stack_parse.pop()
+                        self.parse_tree.add_node_to_tree()
+                    else:
+                        self.parse_tree.add_node_to_tree()
+                        term = (self.current_token
+                                if self.current_token != '$' else 'EOF')
+                        self.error_table.log(error_message=f'unexpected {term}',
+                                             line_number=scanner.line_num)
+
+            elif self.stack_parse.peak() in self.non_terminals:
+                if self.current_token[0] == 'ID' or self.current_token[0] == 'NUM':
+                    if self.current_token[0] in self.parse_table[self.stack_parse.peak()]:
+                        if self.parse_table[self.stack_parse.peak()][self.current_token[0]] == 'synch':
+                            self.parse_tree.add_node_to_tree()
+                            self.error_table.log(
+                                error_message=f'missing {self.current_token}',
+                                line_number=scanner.line_num)
+                        else:
+                            NT = self.stack_parse.pop()
+                            states = self.parse_table[NT][self.current_token[1]]
+                            if NT != 'Program':
+                                self.parse_tree.add_node_to_tree()
+                            states = list(states.split())
+                            ste = [0] * len(states)
+                            for i in range(len(states)):
+                                ste[i] = states[len(states) - i - 1]
+                            self.parse_tree.add_nodes_to_stacks(ste)
+                            for k in ste:
+                                self.stack_parse.push(k)
+                    else:
+                        self.current_token = scanner.get_next_token_for_parser()
+                        self.error_table.log(
+                            error_message=f'illegal {self.current_token}',
+                            line_number=scanner.line_num)
+                if self.current_token[0] == 'KEYWORD' or self.current_token[0] == 'SYMBOL':
+                    if self.current_token[1] in self.parse_table[self.stack_parse.peak()]:
+                        if self.parse_table[self.stack_parse.peak()][self.current_token[1]] == 'synch':
+                            self.parse_tree.add_node_to_tree()
+                            self.error_table.log(
+                                error_message=f'missing {self.current_token}',
+                                line_number=scanner.line_num)
+                        else:
+                            NT = self.stack_parse.pop()
+                            states = self.parse_table[NT][self.current_token[1]]
+                            if NT != 'Program':
+                                self.parse_tree.add_node_to_tree()
+                            states = list(states.split())
+                            ste = [0] * len(states)
+                            for i in range(len(states)):
+                                ste[i] = states[len(states) - i - 1]
+                            self.parse_tree.add_nodes_to_stacks(ste)
+                            for k in ste:
+                                self.stack_parse.push(k)
+                    else:
+                        self.current_token = scanner.get_next_token_for_parser()
+                        self.error_table.log(
+                            error_message=f'illegal {self.current_token}',
+                            line_number=scanner.line_num)
 
     def compute_first(self, expression):
         # expression would be something like "[ NoneTerminal ] +"
@@ -168,12 +196,10 @@ class Parser:
                     f = self.compute_first(' '.join(words[1:]))
                     for ter in f:
                         if ter != '#&':
-                            self.parse_table[words[0]][ter] = ' '.join(
-                                words[1:])
+                            self.parse_table[words[0]][ter] = ' '.join(words[1:])
                         else:
                             for t in self.follows[words[0]]:
-                                self.parse_table[words[0]][t] = ' '.join(
-                                    words[1:])
+                                self.parse_table[words[0]][t] = ' '.join(words[1:])
         for NT in self.non_terminals:
             for t_prime in self.follows[NT]:
                 self.parse_table[NT][t_prime] = 'synch'
