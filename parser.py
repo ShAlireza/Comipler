@@ -85,8 +85,8 @@ while True:
     elif stack_parse.peak() in non_terminals:
         if current_token[0] in parse_table[stack_parse.peak()]:
             if parse_table[stack_parse.peak()][current_token[0]] == 'synch':
-                pass  # \todo
-                continue
+                parse_tree.add_node_to_tree()
+                # \error safheye 24 khat 2
             else:
                 NT = stack_parse.pop()
                 states = parse_table[NT][current_token[0]]
@@ -97,7 +97,8 @@ while True:
                     stack_parse.push(k)
         else:
             pass
-            #  \todo
+            # error safheye 24 khat 1
     else:
-        pass
-        #  \todo
+        parse_tree.add_node_to_tree()
+        # error safheye 24 khat 3
+
