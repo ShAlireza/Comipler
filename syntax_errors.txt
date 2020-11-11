@@ -1,1 +1,1 @@
-#2 : syntax error, missing ('KEYWORD', 'void')
+There is no syntax error.
