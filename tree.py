@@ -35,8 +35,12 @@ class Tree:
     def add_node_to_tree(self, str):
         self.current_node = self.children_stack.peak()
         if str is not None:
-            self.children_stack.peak().name = str
+            self.children_stack.peak().name = '(' + str[0] + ', ' + str[1] + ')'
         self.children_stack.pop().parent = self.parents_stack.pop()
+
+    def delete(self):
+        self.children_stack.pop()
+        self.parents_stack.pop()
 
     def add_nodes_to_stacks(self, node_names):
         for node_name in node_names:
