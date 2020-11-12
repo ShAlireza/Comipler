@@ -108,7 +108,7 @@ class Parser:
                         if self.parse_table[self.stack_parse.peak()][self.current_token[0]] == 'synch':
                             self.parse_tree.delete()
                             self.error_table.log(
-                                error_message=f'Missing {self.stack_parse.peak()}',
+                                error_message=f'missing {self.stack_parse.peak()}',
                                 line_number=scanner.line_num)
                             self.stack_parse.pop()
                             # break
@@ -140,7 +140,7 @@ class Parser:
                         if self.parse_table[self.stack_parse.peak()][self.current_token[1]] == 'synch':
                             self.parse_tree.delete()
                             self.error_table.log(
-                                error_message=f'Missing {self.stack_parse.peak()}',
+                                error_message=f'missing {self.stack_parse.peak()}',
                                 line_number=scanner.line_num)
                             self.stack_parse.pop()
                             # break
