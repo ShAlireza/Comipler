@@ -1,4 +1,4 @@
-"seyed abolfazl rahimi - alireza shater"
+"seyed abolfazl rahimi - alireza shateri"
 
 
 import scanner

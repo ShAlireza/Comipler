@@ -1,0 +1,52 @@
+1. Program -> Declaration-list $
+2. Declaration-list -> Declaration Declaration-list | ε
+3. Declaration -> Declaration-initial Declaration-prime
+4. Declaration-initial -> Type-specifier ID
+5. Declaration-prime -> Fun-declaration-prime | Var-declaration-prime
+6. Var-declaration-prime -> ; | [ NUM ] ;
+7. Fun-declaration-prime -> ( Params ) Compound-stmt
+8. Type-specifier -> int | void
+9. Params -> int ID Param-prime Param-list      | void Param-list-void-abtar
+10. Param-list-void-abtar -> ID Param-prime Param-list |
+11. Param-list -> , Param Param-list | ε
+12. Param -> Declaration-initial Param-prime
+13. Param-prime -> [ ] | ε
+14. Compound-stmt -> { Declaration-list Statement-list }
+15. Statement-list -> Statement Statement-list | ε
+16. Statement -> Expression-stmt | Compound-stmt | Selection-stmt | Iteration-stmt | Return-stmt | Switch-stmt
+17. Expression-stmt -> Expression #pop ; | break ; | ;
+18. Selection-stmt -> if ( Expression #save ) Statement  #compare_if else Statement
+19. Iteration-stmt -> while ( #label Expression #save ) Statement  #compare_if #jp
+20. Return-stmt -> return Return-stmt-prime
+21. Return-stmt-prime -> ; | Expression #pop;
+22. Switch-stmt -> switch ( Expression ) { Case-stmts Default-stmt }
+23. Case-stmts -> Case-stmt Case-stmts |
+24. Case-stmt -> case NUM : Statement-list
+25. Default-stmt -> default : Statement-list |
+26. Expression -> #reserve_temp Simple-expression-zegond |  #pid ID B
+27. B -> = Expression #assign_1 | [ Expression #add_temp_address ] H | Simple-expression-prime
+28. H -> = Expression #assign_1 | G D C
+29. Simple-expression-zegond -> Additive-expression-zegond C
+30. Simple-expression-prime -> Additive-expression-prime C
+31. C -> Relop  Additive-expression #compare | ε
+32. Relop -> < #save_mark | == #save_mark
+33. Additive-expression -> #reserve_temp Term D
+34. Additive-expression-prime -> Term-prime D
+35. Additive-expression-zegond -> Term-zegond D
+36. D -> Addop #reserve_temp Term #add D | ε
+37. Addop -> #save_mark + |#save_mark -
+38. Term -> Signed-factor G
+39. Term-prime -> Signed-factor-prime G
+40. Term-zegond -> Signed-factor-zegond G
+41. G -> * #reserve_temp  Signed-factor #multiply G | ε
+42. Signed-factor -> + Factor | - Factor #negate_temp | Factor
+43. Signed-factor-prime -> Factor-prime
+44. Signed-factor-zegond -> + Factor | - Factor #negate_temp | Factor-zegond
+45. Factor -> ( Expression ) #save_temp_in_last | ID Var-call-prime | NUM #put_in_temp
+46. Var-call-prime -> ( Args ) | Var-prime
+47. Var-prime -> [ Expression ] | ε
+48. Factor-prime -> ( Args ) | ε
+49. Factor-zegond -> ( Expression ) #save_temp_in_last | NUM #put_in_temp
+50. Args -> Arg-list | ε
+51. Arg-list -> Expression Arg-list-prime
+52. Arg-list-prime -> , Expression Arg-list-prime |ε
