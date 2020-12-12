@@ -4,7 +4,7 @@ Alireza Shateri 97106035
 """
 
 import scanner
-
+import code_generator
 import tree
 
 
@@ -78,7 +78,9 @@ class Parser:
 
     def __parse(self):
         while True:
-            if self.current_token[0] == '$' and self.stack_parse.peak() == '$':
+            if '#' in self.stack_parse.peak():
+                code_generator(self.stack_parse.pop())
+            elif self.current_token[0] == '$' and self.stack_parse.peak() == '$':
                 self.parse_tree.add_node_to_tree(None)
                 break
             elif self.stack_parse.peak() in self.terminals:
@@ -126,7 +128,7 @@ class Parser:
                                 ste[i] = states[len(states) - i - 1]
                             if NT != 'Program':
                                 self.parse_tree.add_node_to_tree(None)
-                            if "#&" in ste:
+                            if "eps" in ste:
                                 self.parse_tree.add_nodes_to_stacks(['epsilon'])
                                 self.parse_tree.add_node_to_tree(None)
                                 continue
@@ -158,7 +160,7 @@ class Parser:
                                 ste[i] = states[len(states) - i - 1]
                             if NT != 'Program':
                                 self.parse_tree.add_node_to_tree(None)
-                            if "#&" in ste:
+                            if "eps" in ste:
                                 self.parse_tree.add_nodes_to_stacks(['epsilon'])
                                 self.parse_tree.add_node_to_tree(None)
                                 continue
@@ -195,7 +197,7 @@ class Parser:
                                 ste[i] = states[len(states) - i - 1]
                             if NT != 'Program':
                                 self.parse_tree.add_node_to_tree(None)
-                            if "#&" in ste:
+                            if "eps" in ste:
                                 self.parse_tree.add_nodes_to_stacks(['epsilon'])
                                 self.parse_tree.add_node_to_tree(None)
                                 continue
@@ -218,17 +220,17 @@ class Parser:
         answer = []
         flag = True
         for word in words:
-            if word == '#&':
+            if word == 'eps':
                 continue
             for x in self.firsts[word]:
                 answer.append(x)
-            if '#&' in answer:
-                answer.remove('#&')
-            if '#&' not in self.firsts[word]:
+            if 'eps' in answer:
+                answer.remove('eps')
+            if 'eps' not in self.firsts[word]:
                 flag = False
                 break
         if flag:
-            answer.append('#&')
+            answer.append('eps')
         # print('**********************FIRST OF EXPRESSION STARTS*****************************')
         # print(words, list(answer))
         # print('**********************FIRST OF EXPRESSION ENDS*****************************')
@@ -269,7 +271,7 @@ class Parser:
                 f = self.compute_first(' '.join(words[1:]))
                 for i in range(1, len(words)):
                     for ter in f:
-                        if ter != '#&':
+                        if ter != 'eps':
                             if ter in self.terminals:
                                 self.parse_table[words[0]][ter] = ' '.join(words[1:])
                             if '$' in self.follows[words[0]]:
