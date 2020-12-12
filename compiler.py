@@ -1,5 +1,7 @@
-"seyed abolfazl rahimi - alireza shateri"
-
+"""
+Abolfazl Rahimi 97105941
+Alireza Shateri 97106035
+"""
 
 import scanner
 
