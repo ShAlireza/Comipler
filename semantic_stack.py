@@ -18,3 +18,5 @@ class SemanticStack:
 
         self._stack.append(value)
 
+    def top(self, count=1):
+        return self._stack[-count]

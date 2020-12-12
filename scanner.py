@@ -9,13 +9,15 @@ class Util:
 file = Util.read('input')
 unread_parts = file
 line_num = 1
-symbol_table = []
+symbol_table = {}
 errors = {}
 tokens = {}
 # except for = and ==
 symbols = [';', ':', ',', '[', ']', '(', ')', '{', '}', '+', '-', '*', '<']
-keywords = ['if', 'else', 'void', 'int', 'while', 'break', 'switch', 'default', 'case', 'return']
+keywords = ['if', 'else', 'void', 'int', 'while',
+            'break', 'switch', 'default', 'case', 'return']
 spaces = [' ', '\n', '\t', '\r', '\v', '\f']
+temp_address = 9999
 
 
 def generate_error(error_token_pair):
@@ -61,12 +63,23 @@ def omit_start(token_type, token_len):
     unread_parts = unread_parts[token_len:]
     if token_type == 'ID':
         if token not in symbol_table:
-            symbol_table.append(token)
+            symbol_table[token] = token
     return token_type, token
 
 
 def valid_char(char):
     return char.isalnum() or char in symbols + spaces + ['/', '=']
+
+
+def findaddr(name):
+    return symbol_table.get(name)
+
+
+def get_temp():
+    global temp_address
+
+    temp_address += 1
+    return temp_address
 
 
 def get_next_token():
@@ -87,7 +100,8 @@ def get_next_token():
             return 'COMMENT', unread_parts
         elif len(unread_parts) > 1 and unread_parts[1] == '*':
             for i in range(len(unread_parts)):
-                if unread_parts[i] == '*' and i + 1 < len(unread_parts) and unread_parts[i + 1] == '/':
+                if unread_parts[i] == '*' and i + 1 < len(unread_parts) and \
+                        unread_parts[i + 1] == '/':
                     return omit_start('COMMENT', i + 2)
             # not sure of it
             comment_start = unread_parts[:min(len(unread_parts), 10)] + "..."
@@ -98,7 +112,8 @@ def get_next_token():
         if len(unread_parts) > 1 and unread_parts[1] == '=':
             return omit_start('SYMBOL', 2)
         return omit_start('SYMBOL', 1)
-    if len(unread_parts) > 1 and unread_parts[0] == '*' and unread_parts[1] == '/':
+    if len(unread_parts) > 1 and unread_parts[0] == '*' and unread_parts[
+        1] == '/':
         return omit_start('UNBALANCED_COMMENT_ERROR', 2)
     if unread_parts[0] in symbols:
         return omit_start('SYMBOL', 1)
@@ -128,7 +143,7 @@ def get_next_token():
 
 
 for keyword in keywords:
-    symbol_table.append(keyword)
+    symbol_table[keyword] = keyword
 
 
 def get_next_token_for_parser():
