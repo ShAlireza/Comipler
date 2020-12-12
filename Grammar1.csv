@@ -1,0 +1,92 @@
+Program  Declaration-list $
+Declaration-list  Declaration Declaration-list
+Declaration-list  #&
+Declaration  Declaration-initial Declaration-prime
+Declaration-initial  Type-specifier ID
+Declaration-prime  Fun-declaration-prime
+Declaration-prime  Var-declaration-prime
+Var-declaration-prime  ;
+Var-declaration-prime  [ NUM ] ;
+Fun-declaration-prime  ( Params ) Compound-stmt
+Type-specifier  int
+Type-specifier  void
+Params  int ID Param-prime Param-list
+Params  void Param-list-void-abtar
+Param-list-void-abtar  ID Param-prime Param-list
+Param-list-void-abtar
+Param-list  , Param Param-list
+Param-list  #&
+Param  Declaration-initial Param-prime
+Param-prime  [ ]
+Param-prime  #&
+Compound-stmt  { Declaration-list Statement-list }
+Statement-list  Statement Statement-list
+Statement-list  #&
+Statement  Expression-stmt
+Statement  Compound-stmt
+Statement  Selection-stmt
+Statement  Iteration-stmt
+Statement  Return-stmt
+Statement  Switch-stmt
+Expression-stmt  Expression #pop ;
+Expression-stmt  break ;
+Expression-stmt  ;
+Selection-stmt  if ( Expression #save ) Statement  #compare_if else Statement
+Iteration-stmt  while ( #label Expression #save ) Statement  #compare_if #jp
+Return-stmt  return Return-stmt-prime
+Return-stmt-prime  ;
+Return-stmt-prime  Expression #pop;
+Switch-stmt  switch ( Expression ) { Case-stmts Default-stmt }
+Case-stmts  Case-stmt Case-stmts
+Case-stmts
+Case-stmt  case NUM : Statement-list
+Default-stmt  default : Statement-list
+Default-stmt
+Expression  #reserve_temp Simple-expression-zegond
+Expression   #pid ID B
+B  = Expression #assign_1
+B  [ Expression #add_temp_address ] H
+B  Simple-expression-prime
+H  = Expression #assign_1
+H  G D C
+Simple-expression-zegond  Additive-expression-zegond C
+Simple-expression-prime  Additive-expression-prime C
+C  Relop  Additive-expression #compare
+C  #&
+Relop  < #save_mark
+Relop  == #save_mark
+Additive-expression  #reserve_temp Term D
+Additive-expression-prime  Term-prime D
+Additive-expression-zegond  Term-zegond D
+D  Addop #reserve_temp Term #add D
+D  #&
+Addop  #save_mark +
+Addop #save_mark -
+Term  Signed-factor G
+Term-prime  Signed-factor-prime G
+Term-zegond  Signed-factor-zegond G
+G  * #reserve_temp  Signed-factor #multiply G
+G  #&
+Signed-factor  + Factor
+Signed-factor  - Factor #negate_temp
+Signed-factor  Factor
+Signed-factor-prime  Factor-prime
+Signed-factor-zegond  + Factor
+Signed-factor-zegond  - Factor #negate_temp
+Signed-factor-zegond  Factor-zegond
+Factor  ( Expression ) #save_temp_in_last
+Factor  ID Var-call-prime
+Factor  NUM #put_in_temp
+Var-call-prime  ( Args )
+Var-call-prime  Var-prime
+Var-prime  [ Expression ]
+Var-prime  #&
+Factor-prime  ( Args )
+Factor-prime  #&
+Factor-zegond  ( Expression ) #save_temp_in_last
+Factor-zegond  NUM #put_in_temp
+Args  Arg-list
+Args  #&
+Arg-list  Expression Arg-list-prime
+Arg-list-prime  , Expression Arg-list-prime
+Arg-list-prime #&
