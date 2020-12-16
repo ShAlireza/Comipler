@@ -94,28 +94,23 @@ class Parser:
                         self.parse_tree.add_node_to_tree(self.current_token)
                         self.current_token = scanner.get_next_token_for_parser()
                         self.stack_parse.pop()
-                        # break
                     else:
                         self.parse_tree.delete()
                         self.error_table.log(
                             error_message=f'missing {self.stack_parse.peak()}',
                             line_number=scanner.line_num)
                         self.stack_parse.pop()
-
-                        # break
                 else:
                     if self.stack_parse.peak() == self.current_token[1]:
                         self.stack_parse.pop()
                         self.parse_tree.add_node_to_tree(self.current_token)
                         self.current_token = scanner.get_next_token_for_parser()
-                        # break
                     else:
                         self.parse_tree.delete()
                         self.error_table.log(
                             error_message=f'missing {self.stack_parse.peak()}',
                             line_number=scanner.line_num)
                         self.stack_parse.pop()
-                        # break
             elif self.stack_parse.peak() in self.non_terminals:
                 if self.current_token[0] == 'ID' or self.current_token[
                     0] == 'NUM':
@@ -240,7 +235,10 @@ class Parser:
         words = expression.split(' ')
         answer = []
         flag = True
+        print(words)
         for word in words:
+            if '#' in word:
+                continue
             if word == 'eps':
                 continue
             for x in self.firsts[word]:

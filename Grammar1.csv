@@ -13,7 +13,7 @@ Type-specifier void
 Params int ID Param-prime Param-list
 Params void Param-list-void-abtar
 Param-list-void-abtar ID Param-prime Param-list
-Param-list-void-abtar
+Param-list-void-abtar eps
 Param-list , Param Param-list
 Param-list eps
 Param Declaration-initial Param-prime
@@ -38,10 +38,10 @@ Return-stmt-prime ;
 Return-stmt-prime Expression #pop;
 Switch-stmt switch ( Expression ) { Case-stmts Default-stmt }
 Case-stmts Case-stmt Case-stmts
-Case-stmts
+Case-stmts eps
 Case-stmt case NUM : Statement-list
 Default-stmt default : Statement-list
-Default-stmt
+Default-stmt eps
 Expression #reserve_temp Simple-expression-zegond
 Expression #pid ID B
 B = Expression #assign_1
