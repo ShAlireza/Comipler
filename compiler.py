@@ -82,7 +82,7 @@ class Parser:
     def __parse(self):
         while True:
             if '#' in self.stack_parse.peak():
-                self.code_generator(self.stack_parse.pop())
+                self.code_generator('_' + self.stack_parse.pop()[1:])
             elif self.current_token[
                 0] == '$' and self.stack_parse.peak() == '$':
                 self.parse_tree.add_node_to_tree(None)
