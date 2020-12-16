@@ -235,7 +235,6 @@ class Parser:
         words = expression.split(' ')
         answer = []
         flag = True
-        print(words)
         for word in words:
             if '#' in word:
                 continue
