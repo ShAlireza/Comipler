@@ -49,7 +49,7 @@ class CodeGenerator:
         temp = get_temp()
         self.semantic_stack.push(temp)
 
-    def _assign_1(self, **kwargs):
+    def _assign(self, **kwargs):
         self.pb[self.index] = (f'(ASSIGN, '
                                f'{self.semantic_stack.top()}, '
                                f'{self.semantic_stack.top(2)}, )')
