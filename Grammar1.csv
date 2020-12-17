@@ -35,7 +35,7 @@ Selection-stmt if ( Expression #save ) Statement #compare_if else Statement
 Iteration-stmt while ( #label Expression #save ) Statement #compare_if #jp
 Return-stmt return Return-stmt-prime
 Return-stmt-prime ;
-Return-stmt-prime Expression #pop;
+Return-stmt-prime Expression #pop ;
 Switch-stmt switch ( Expression ) { Case-stmts Default-stmt }
 Case-stmts Case-stmt Case-stmts
 Case-stmts eps
