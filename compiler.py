@@ -315,10 +315,6 @@ class Parser:
 parser = Parser()
 parser.parse()
 
-for code in parser.code_generator.pb:
-    if code != '0':
-        print(code)
-
 with open('output.txt', 'w') as file:
     for i, code in enumerate(parser.code_generator.pb):
         if code != '0':
