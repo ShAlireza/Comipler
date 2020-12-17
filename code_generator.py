@@ -153,6 +153,6 @@ class CodeGenerator:
         for i in range(int(size)):
             self.pb[self.index] = (f'(ASSIGN, '
                                    f'#0, '
-                                   f'{self.semantic_stack.top(2) + i})')
+                                   f'{self.semantic_stack.top(2) + i * 4})')
             self.index += 1
         increase_data_pointer(size - 1)

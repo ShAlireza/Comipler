@@ -18,7 +18,7 @@ keywords = ['if', 'else', 'void', 'int', 'while',
             'break', 'switch', 'default', 'case', 'return']
 spaces = [' ', '\n', '\t', '\r', '\v', '\f']
 data_address = 1000
-temp_address = 9999
+temp_address = 10000
 
 
 def generate_error(error_token_pair):
@@ -67,7 +67,7 @@ def omit_start(token_type, token_len):
         if token not in symbol_table:
             symbol_table[token] = {'token': token, 'address': data_address,
                                    'type': ''}
-            data_address += 1
+            data_address += 4
     return token_type, token
 
 
@@ -83,7 +83,7 @@ def findaddr(name):
 def get_temp():
     global temp_address
 
-    temp_address += 1
+    temp_address += 4
     return temp_address
 
 
@@ -96,7 +96,7 @@ def set_type(name, var_type):
 def increase_data_pointer(value):
     global data_address
 
-    data_address += value
+    data_address += 4 * value
 
 
 def get_next_token():
