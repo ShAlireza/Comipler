@@ -44,10 +44,10 @@ Default-stmt default : Statement-list
 Default-stmt eps
 Expression #reserve_temp Simple-expression-zegond
 Expression #pid ID B
-B = Expression #assign_1
+B = Expression #assign
 B [ Expression #add_temp_address ] H
 B Simple-expression-prime
-H = Expression #assign_1
+H = Expression #assign
 H G D C
 Simple-expression-zegond Additive-expression-zegond C
 Simple-expression-prime Additive-expression-prime C
