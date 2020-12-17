@@ -2,17 +2,17 @@ Program Declaration-list $
 Declaration-list Declaration Declaration-list
 Declaration-list eps
 Declaration Declaration-initial Declaration-prime
-Declaration-initial Type-specifier ID
+Declaration-initial Type-specifier ID #pid
 Declaration-prime Fun-declaration-prime
 Declaration-prime Var-declaration-prime
 Var-declaration-prime ;
-Var-declaration-prime [ NUM ] ;
+Var-declaration-prime [ NUM #pnum ] ;
 Fun-declaration-prime ( Params ) Compound-stmt
-Type-specifier int
-Type-specifier void
-Params int ID Param-prime Param-list
+Type-specifier int #push_1
+Type-specifier void #push_2
+Params int #push_int ID #pid Param-prime Param-list
 Params void Param-list-void-abtar
-Param-list-void-abtar ID Param-prime Param-list
+Param-list-void-abtar ID #pid Param-prime Param-list
 Param-list-void-abtar eps
 Param-list , Param Param-list
 Param-list eps
@@ -28,24 +28,24 @@ Statement Selection-stmt
 Statement Iteration-stmt
 Statement Return-stmt
 Statement Switch-stmt
-Expression-stmt Expression #pop ;
+Expression-stmt Expression ; #pop
 Expression-stmt break ;
 Expression-stmt ;
-Selection-stmt if ( Expression #save ) Statement #compare_if else Statement
-Iteration-stmt while ( #label Expression #save ) Statement #compare_if #jp
+Selection-stmt if ( Expression #save ) Statement #jpf_save else Statement #jp
+Iteration-stmt while ( #label Expression #save ) Statement #while
 Return-stmt return Return-stmt-prime
 Return-stmt-prime ;
-Return-stmt-prime Expression #pop ;
+Return-stmt-prime Expression ; #pop
 Switch-stmt switch ( Expression ) { Case-stmts Default-stmt }
 Case-stmts Case-stmt Case-stmts
 Case-stmts eps
 Case-stmt case NUM : Statement-list
 Default-stmt default : Statement-list
 Default-stmt eps
-Expression #reserve_temp Simple-expression-zegond
-Expression #pid ID B
+Expression Simple-expression-zegond
+Expression ID #pid B
 B = Expression #assign
-B [ Expression #add_temp_address ] H
+B [ Expression ] #set_array_address H
 B Simple-expression-prime
 H = Expression #assign
 H G D C
@@ -53,38 +53,38 @@ Simple-expression-zegond Additive-expression-zegond C
 Simple-expression-prime Additive-expression-prime C
 C Relop Additive-expression #compare
 C eps
-Relop < #save_mark
-Relop == #save_mark
-Additive-expression #reserve_temp Term D
+Relop < #push_1
+Relop == #push_2
+Additive-expression Term D
 Additive-expression-prime Term-prime D
 Additive-expression-zegond Term-zegond D
-D Addop #reserve_temp Term #add D
+D Addop Term #add D
 D eps
-Addop #save_mark +
-Addop #save_mark -
+Addop + #push_1
+Addop - #push_2
 Term Signed-factor G
 Term-prime Signed-factor-prime G
 Term-zegond Signed-factor-zegond G
-G * #reserve_temp Signed-factor #multiply G
+G * Signed-factor #mult G
 G eps
 Signed-factor + Factor
-Signed-factor - Factor #negate_temp
+Signed-factor - Factor #minus_sign
 Signed-factor Factor
 Signed-factor-prime Factor-prime
 Signed-factor-zegond + Factor
-Signed-factor-zegond - Factor #negate_temp
+Signed-factor-zegond - Factor #minus_sign
 Signed-factor-zegond Factor-zegond
-Factor ( Expression ) #save_temp_in_last
-Factor ID Var-call-prime
-Factor NUM #put_in_temp
+Factor ( Expression )
+Factor ID #pid Var-call-prime
+Factor NUM #pnum
 Var-call-prime ( Args )
 Var-call-prime Var-prime
-Var-prime [ Expression ]
+Var-prime [ Expression ] #set_array_address
 Var-prime eps
-Factor-prime ( Args )
+Factor-prime ( Args #why )
 Factor-prime eps
-Factor-zegond ( Expression ) #save_temp_in_last
-Factor-zegond NUM #put_in_temp
+Factor-zegond ( Expression )
+Factor-zegond NUM #pnum
 Args Arg-list
 Args eps
 Arg-list Expression Arg-list-prime
