@@ -17,7 +17,8 @@ symbols = [';', ':', ',', '[', ']', '(', ')', '{', '}', '+', '-', '*', '<']
 keywords = ['if', 'else', 'void', 'int', 'while',
             'break', 'switch', 'default', 'case', 'return']
 spaces = [' ', '\n', '\t', '\r', '\v', '\f']
-temp_address = 9999
+data_address = 10000
+temp_address = 99999
 
 
 def generate_error(error_token_pair):
@@ -58,12 +59,15 @@ def report():
 
 
 def omit_start(token_type, token_len):
-    global unread_parts, symbol_table
+    global unread_parts, symbol_table, data_address
+
     token = unread_parts[:token_len]
     unread_parts = unread_parts[token_len:]
     if token_type == 'ID':
         if token not in symbol_table:
-            symbol_table[token] = token
+            symbol_table[token] = {'token': token, 'address': data_address,
+                                   'type': ''}
+            data_address += 1
     return token_type, token
 
 
@@ -72,7 +76,7 @@ def valid_char(char):
 
 
 def findaddr(name):
-    return symbol_table.get(name)
+    return symbol_table.get(name)['address']
 
 
 def get_temp():
@@ -143,7 +147,8 @@ def get_next_token():
 
 
 for keyword in keywords:
-    symbol_table[keyword] = keyword
+    symbol_table[keyword] = {'token': keyword, 'address': 0,
+                             'type': ''}
 
 
 def get_next_token_for_parser():

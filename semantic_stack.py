@@ -15,7 +15,7 @@ class SemanticStack:
     def push(self, value):
         if len(self._stack) + 1 > self.max_size:
             raise ValueError('Stack is full')
-
+        print(value, 'pushhhh')
         self._stack.append(value)
 
     def top(self, count=1):
