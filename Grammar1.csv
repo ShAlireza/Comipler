@@ -2,17 +2,17 @@ Program Declaration-list $
 Declaration-list Declaration Declaration-list
 Declaration-list eps
 Declaration Declaration-initial Declaration-prime
-Declaration-initial Type-specifier ID #pid
+Declaration-initial Type-specifier #pid ID
 Declaration-prime Fun-declaration-prime
 Declaration-prime Var-declaration-prime
-Var-declaration-prime ;
-Var-declaration-prime [ NUM #pnum ] ;
+Var-declaration-prime ; #init_var
+Var-declaration-prime [ #pnum NUM ] ; #init_array
 Fun-declaration-prime ( Params ) Compound-stmt
 Type-specifier int #push_1
 Type-specifier void #push_2
-Params int #push_int ID #pid Param-prime Param-list
+Params int #push_int #pid ID Param-prime Param-list
 Params void Param-list-void-abtar
-Param-list-void-abtar ID #pid Param-prime Param-list
+Param-list-void-abtar #pid ID Param-prime Param-list
 Param-list-void-abtar eps
 Param-list , Param Param-list
 Param-list eps
@@ -43,7 +43,7 @@ Case-stmt case NUM : Statement-list
 Default-stmt default : Statement-list
 Default-stmt eps
 Expression Simple-expression-zegond
-Expression ID #pid B
+Expression #pid ID B
 B = Expression #assign
 B [ Expression ] #set_array_address H
 B Simple-expression-prime
@@ -75,16 +75,16 @@ Signed-factor-zegond + Factor
 Signed-factor-zegond - Factor #minus_sign
 Signed-factor-zegond Factor-zegond
 Factor ( Expression )
-Factor ID #pid Var-call-prime
-Factor NUM #pnum
+Factor #pid ID Var-call-prime
+Factor #pnum NUM
 Var-call-prime ( Args )
 Var-call-prime Var-prime
 Var-prime [ Expression ] #set_array_address
 Var-prime eps
-Factor-prime ( Args #why )
+Factor-prime ( Args #output )
 Factor-prime eps
 Factor-zegond ( Expression )
-Factor-zegond NUM #pnum
+Factor-zegond #pnum NUM
 Args Arg-list
 Args eps
 Arg-list Expression Arg-list-prime

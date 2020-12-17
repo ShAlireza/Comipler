@@ -88,7 +88,7 @@ class Parser:
                                         _input=self.current_token[1])
                 else:
                     self.code_generator('_' + self.stack_parse.pop()[1:],
-                                        _input=self.current_token[0])
+                                        _input=self.current_token[1])
             elif self.current_token[
                 0] == '$' and self.stack_parse.peak() == '$':
                 self.parse_tree.add_node_to_tree(None)
@@ -316,4 +316,11 @@ parser = Parser()
 parser.parse()
 
 for code in parser.code_generator.pb:
-    print(code)
+    if code != '0':
+        print(code)
+
+with open('output.txt', 'w') as file:
+    for i, code in enumerate(parser.code_generator.pb):
+        if code == '0':
+            break
+        file.write(f'{i}\t{code}\n')

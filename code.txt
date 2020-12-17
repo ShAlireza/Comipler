@@ -1,7 +1,0 @@
-def get_follow_dict(path):
-        res = {}
-        with open(path, 'r') as follow_file:
-            for line in follow_file.readlines():
-                words = line.strip().split(' ')
-                res[words[0]] = words[1:]
-        return res

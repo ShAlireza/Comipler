@@ -17,8 +17,8 @@ symbols = [';', ':', ',', '[', ']', '(', ')', '{', '}', '+', '-', '*', '<']
 keywords = ['if', 'else', 'void', 'int', 'while',
             'break', 'switch', 'default', 'case', 'return']
 spaces = [' ', '\n', '\t', '\r', '\v', '\f']
-data_address = 10000
-temp_address = 99999
+data_address = 1000
+temp_address = 9999
 
 
 def generate_error(error_token_pair):
@@ -76,6 +76,7 @@ def valid_char(char):
 
 
 def findaddr(name):
+    print(name)
     return symbol_table.get(name)['address']
 
 
@@ -84,6 +85,18 @@ def get_temp():
 
     temp_address += 1
     return temp_address
+
+
+def set_type(name, var_type):
+    global symbol_table
+
+    symbol_table[name]['type'] = var_type
+
+
+def increase_data_pointer(value):
+    global data_address
+
+    data_address += value
 
 
 def get_next_token():
