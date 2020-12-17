@@ -6,7 +6,7 @@ class CodeGenerator:
 
     def __init__(self, semantic_stack: SemanticStack):
         self.semantic_stack = semantic_stack
-        self.pb = ['0'] * 10000
+        self.pb = ['0'] * 1000
         self.index = 0
 
     def __call__(self, action, **kwargs):
@@ -34,10 +34,9 @@ class CodeGenerator:
         self.semantic_stack.push(self.index)
 
     def _jp(self, **kwargs):
-        self.pb[self.index] = (f'(JP, '
-                               f'{self.semantic_stack.top(2)}, '
-                               f',)')
-        self.index += 1
+        self.pb[self.semantic_stack.top()] = (f'(JP, '
+                                              f'{self.index}, '
+                                              f',)')
         self.semantic_stack.pop()
 
     def _assign(self, **kwargs):
@@ -125,12 +124,14 @@ class CodeGenerator:
         temp = get_temp()
         offset, base = self.semantic_stack.top(), self.semantic_stack.top(2)
 
-        self.pb[self.index] = (f'(ASSIGN, '
-                               f'{base + offset}, '
-                               f'{temp},)')
+        self.pb[self.index] = (f'(ADD, '
+                               f'#{base}, '
+                               f'{offset}, '
+                               f'{temp})')
+
         self.index += 1
         self.semantic_stack.pop(2)
-        self.semantic_stack.push(temp)
+        self.semantic_stack.push(f'@{temp}')
 
     def _output(self, **kwargs):
         self.pb[self.index] = (f'(PRINT, '

@@ -321,6 +321,5 @@ for code in parser.code_generator.pb:
 
 with open('output.txt', 'w') as file:
     for i, code in enumerate(parser.code_generator.pb):
-        if code == '0':
-            break
-        file.write(f'{i}\t{code}\n')
+        if code != '0':
+            file.write(f'{i}\t{code}\n')
