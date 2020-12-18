@@ -1,0 +1,10 @@
+Files PA3_Resources/T1/expected.txt and tester_output.txt are identical
+Files PA3_Resources/T2/expected.txt and tester_output.txt are identical
+Files PA3_Resources/T3/expected.txt and tester_output.txt are identical
+Files PA3_Resources/T4/expected.txt and tester_output.txt are identical
+Files PA3_Resources/T5/expected.txt and tester_output.txt are identical
+Files PA3_Resources/T6/expected.txt and tester_output.txt are identical
+Files PA3_Resources/T7/expected.txt and tester_output.txt are identical
+Files PA3_Resources/T8/expected.txt and tester_output.txt are identical
+Files PA3_Resources/T9/expected.txt and tester_output.txt are identical
+Files PA3_Resources/T10/expected.txt and tester_output.txt are identical

@@ -6,7 +6,6 @@ class SemanticStack:
         self._stack = []
 
     def pop(self, count=1):
-        print(self._stack, 'pop <========')
         if len(self._stack) < count:
             raise ValueError('Pop size bigger than stack size')
 
@@ -14,7 +13,6 @@ class SemanticStack:
             self._stack.pop()
 
     def push(self, value):
-        print(value, self._stack, 'push <========')
         if len(self._stack) + 1 > self.max_size:
             raise ValueError('Stack is full')
         self._stack.append(value)

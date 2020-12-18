@@ -10,8 +10,7 @@ class CodeGenerator:
         self.index = 0
 
     def __call__(self, action, **kwargs):
-        print(action, 'action <==============')
-        return getattr(self, action)(**kwargs)
+        return getattr(self, '_' + action)(**kwargs)
 
     def _pop(self, **kwargs):
         count = kwargs.get('count', 1)
