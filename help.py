@@ -24,9 +24,12 @@ class function_table:
     def __init__(self):
         self.funcs = {}
         self.params = {}
+        # self.funcs['output'] = {'address': 30000, 'type': 'void',
+        #                         'params': ['TOPRINT'], 'params_type': ['int'], 'params_address': [30004], 'params_array': [False],
+        #                         'start_address': 1600}
 
     def func_declare(self, name, address, return_type):
-        self.funcs[name] = {'address': address, 'type': return_type,
+        self.funcs[name] = {'address': address, 'type': return_type, 'call': False,
                             'params': [], 'params_type': [], 'params_address': [], 'params_array': []}
 
     def add_param(self, func_name, param_name, param_type, param_address, is_array):

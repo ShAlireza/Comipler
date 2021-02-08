@@ -1,8 +1,6 @@
-int foo( int a ) {
-    return 1;
-}
 void main(void){
-    int q;
-    q = foo(q);
-    return;
+    int c;
+    int k;
+    k = 1;
+    output(k);
 }

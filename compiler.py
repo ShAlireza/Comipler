@@ -81,6 +81,7 @@ class Parser:
 
     def __parse(self):
         while True:
+            print(self.stack_parse.peak(), self.current_token)
             if '#' in self.stack_parse.peak():
                 self.code_generator(self.stack_parse.pop()[1:],
                                     _input=self.current_token[1])
@@ -139,6 +140,9 @@ class Parser:
                                 self.parse_tree.add_nodes_to_stacks(
                                     ['epsilon'])
                                 self.parse_tree.add_node_to_tree(None)
+                                for ty in ste:
+                                    if ty != "eps":
+                                        self.stack_parse.push(ty)
                                 continue
                             self.parse_tree.add_nodes_to_stacks(ste)
                             for k in ste:
@@ -176,6 +180,9 @@ class Parser:
                                 self.parse_tree.add_nodes_to_stacks(
                                     ['epsilon'])
                                 self.parse_tree.add_node_to_tree(None)
+                                for ty in ste:
+                                    if ty != "eps":
+                                        self.stack_parse.push(ty)
                                 continue
                             self.parse_tree.add_nodes_to_stacks(ste)
                             for k in ste:
@@ -217,6 +224,9 @@ class Parser:
                                 self.parse_tree.add_nodes_to_stacks(
                                     ['epsilon'])
                                 self.parse_tree.add_node_to_tree(None)
+                                for ty in ste:
+                                    if ty != "eps":
+                                        self.stack_parse.push(ty)
                                 continue
                             self.parse_tree.add_nodes_to_stacks(ste)
                             for k in ste:

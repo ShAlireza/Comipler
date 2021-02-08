@@ -7,7 +7,7 @@ class CodeGenerator:
 
     def __init__(self, semantic_stack: SemanticStack):
         self.semantic_stack = semantic_stack
-        self.pb = ['0'] * 1000
+        self.pb = ['0'] * 1005
         self.index = 0
         self.function_table = function_table()
         self.inside_if = False
@@ -16,6 +16,7 @@ class CodeGenerator:
         self.arg_counter = -1
         self.func_names = None
         self.ra = []
+        self.main_seen = False
 
     def __call__(self, action, **kwargs):
         return getattr(self, '_' + action)(**kwargs)
@@ -23,6 +24,20 @@ class CodeGenerator:
     def _pop(self, **kwargs):
         count = kwargs.get('count', 1)
         self.semantic_stack.pop(count)
+
+    def _main(self, **kwargs):
+        self.semantic_stack.push(self.index)
+        self.index += 1
+        self._output()
+
+    def _output(self, **kwargs):
+        self.pb[self.index] = f'(PRINT, 30004, ,)'
+        self.function_table.func_declare('output', 30000, 'void')
+        self.function_table.add_param('output', 'ABOLFAZL', 'int', 30004, False)
+        self.index += 1
+        self.function_table.funcs['output']['start_address'] = 1
+        self.function_table.funcs['output']['return_address'] = 2
+        self.index += 1
 
     def _pid(self, **kwargs):
         _input = kwargs.get('_input')
@@ -140,12 +155,6 @@ class CodeGenerator:
         self.semantic_stack.pop(2)
         self.semantic_stack.push(f'@{temp}')
 
-    def _output(self, **kwargs):
-        self.pb[self.index] = (f'(PRINT, '
-                               f'{self.semantic_stack.top()}, ,)')
-        self.semantic_stack.pop()
-        self.index += 1
-
     def _init_var(self, **kwargs):
         self.pb[self.index] = (f'(ASSIGN, '
                                f'#0, '
@@ -205,26 +214,28 @@ class CodeGenerator:
         self.inside_if = True
 
     def _func_declared(self, **kwargs):
-        print(self.semantic_stack._stack)
         name = None
         for names in symbol_table:
             if symbol_table[names]['address'] == self.semantic_stack.top():
                 name = names
                 break
+        print(name, "name was founded")
+        if name == 'main':
+            self.pb[0] = f'(JP, #{self.index}, , )'
+            self.main_seen = True
         if self.semantic_stack.top(2) == 1:
             self.function_table.func_declare(name, self.semantic_stack.top(), 'int')
         else:
             self.function_table.func_declare(name, self.semantic_stack.top(), 'void')
 
     def _push_int(self, **kwargs):
-        print("AAAAAAAAAAAAAAAAAAAA")
         self.semantic_stack.push('int')
 
     def _push_void(self, **kwargs):
-        self.semantic_stack.push('void')
+        if not self.main_seen:
+            self.semantic_stack.push('void')
 
     def _param_added(self, **kwargs):
-        print("BBBBBBBBBBBBBBBBB")
         func_name = None
         for names in symbol_table:
             if symbol_table[names]['address'] == self.semantic_stack.top(3):
@@ -241,7 +252,6 @@ class CodeGenerator:
         self.semantic_stack.pop(2)
 
     def _param_array_added(self, **kwargs):
-        print("PARAM ADDED")
         func_name = None
         for names in symbol_table:
             if symbol_table[names]['address'] == self.semantic_stack.top(3):
@@ -266,27 +276,33 @@ class CodeGenerator:
         self.semantic_stack.pop()
 
     def _set_func_start(self, **kwargs):
-        print("SET FUNC STARTs")
+        if self.main_seen:
+            return
         func_name = None
+        print(self.semantic_stack._stack)
         for names in symbol_table:
-            if symbol_table[names]['address'] == self.semantic_stack.top(3):
+            if symbol_table[names]['address'] == self.semantic_stack.top():
                 func_name = names
                 break
+        print(func_name, "SET FUNC START")
         self.function_table.funcs[func_name]['start_address'] = self.index
-        print(self.function_table.funcs)
+        print(self.function_table.funcs[func_name])
 
     def _func_call_started(self, **kwargs):
         func_name = None
         for names in symbol_table:
-            if symbol_table[names]['address'] == self.semantic_stack.top(3):
+            if symbol_table[names]['address'] == self.semantic_stack.top():
                 func_name = names
                 break
+        print("FUNC CALL STARTED")
+        print(func_name)
         self.func_number_of_args = len(self.function_table.funcs[func_name]['params'])
         self.arg_counter = 0
         self.func_names = func_name
+        self.function_table.funcs[self.func_names]['call'] = True
 
     def _push_arg(self, **kwargs):
-        print('push arg')
+        print(self.function_table.funcs[self.func_names]['params_address'], "DDDDDDDDDDDDDDDDDDDDDDDDDDdddddd")
         self.semantic_stack.push(self.function_table.funcs[self.func_names]['params_address'][self.arg_counter])
         self.arg_counter += 1
 
@@ -296,7 +312,18 @@ class CodeGenerator:
         self.ra.append(self.index)
         self.pb[self.index] = f"(JP, {self.function_table.funcs[self.func_names]['start_address']}, , )"
         self.index += 1
+        self.pb[self.function_table.funcs[self.func_names]['return_address']] = f"(JP, #{self.index}, , )"
         self.func_names = None
 
     def _return(self, **kwargs):
-        self.pb[self.index] = f"(JP, #{self.ra.pop()}, , )"
+        if self.main_seen:
+            return
+        func_name = None
+        for names in symbol_table:
+            if symbol_table[names]['address'] == self.semantic_stack.top():
+                func_name = names
+                break
+        self.function_table.funcs[func_name]['return_address'] = self.index
+        self.index += 1
+        self._pop()
+        self._pop()

@@ -1,4 +1,4 @@
-Program Declaration-list $
+Program #main Declaration-list $
 Declaration-list Declaration Declaration-list
 Declaration-list eps
 Declaration Declaration-initial Declaration-prime
@@ -7,7 +7,7 @@ Declaration-prime #func_declared Fun-declaration-prime
 Declaration-prime Var-declaration-prime
 Var-declaration-prime ; #init_var
 Var-declaration-prime [ #pnum NUM ] ; #init_array
-Fun-declaration-prime ( Params ) #set_func_start Compound-stmt
+Fun-declaration-prime ( Params ) #set_func_start Compound-stmt #return
 Type-specifier int #push_1
 Type-specifier void #push_2
 Params int #push_int #pid ID Param-prime Param-list
@@ -18,7 +18,7 @@ Param-list , Param Param-list
 Param-list eps
 Param Declaration-initial Param-prime
 Param-prime [ ] #param_array_added
-Param-prime eps #param_added
+Param-prime #param_added eps
 Compound-stmt { Declaration-list Statement-list }
 Statement-list Statement Statement-list
 Statement-list eps
@@ -34,8 +34,8 @@ Expression-stmt ;
 Selection-stmt if #if ( Expression #save ) Statement #jpf_save else Statement #jp
 Iteration-stmt #break_temp while ( #label Expression #save ) Statement #while #set_break_temp
 Return-stmt return Return-stmt-prime
-Return-stmt-prime ; #pop #pop
-Return-stmt-prime Expression #assign ; #pop #pop
+Return-stmt-prime ;
+Return-stmt-prime Expression #assign ;
 Switch-stmt #break_temp switch ( Expression ) { Case-stmts Default-stmt } #pop #set_break_temp
 Case-stmts Case-stmt Case-stmts
 Case-stmts eps
@@ -81,7 +81,7 @@ Var-call-prime #func_call_started ( Args ) #func_call_ended
 Var-call-prime Var-prime
 Var-prime [ Expression ] #set_array_address
 Var-prime eps
-Factor-prime #func_call_started ( Args #output ) #func_call_ended
+Factor-prime #func_call_started ( Args ) #func_call_ended
 Factor-prime eps
 Factor-zegond ( Expression )
 Factor-zegond #pnum NUM

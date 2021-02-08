@@ -76,7 +76,6 @@ def valid_char(char):
 
 
 def findaddr(name):
-    print(name)
     return symbol_table.get(name)['address']
 
 
