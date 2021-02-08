@@ -66,7 +66,7 @@ def omit_start(token_type, token_len):
     if token_type == 'ID':
         if token not in symbol_table:
             symbol_table[token] = {'token': token, 'address': data_address,
-                                   'type': ''}
+                                   'type': '', 'is_func': False, 'parameters': [], 'scope': None}
             data_address += 4
     return token_type, token
 
@@ -161,7 +161,7 @@ def get_next_token():
 
 for keyword in keywords:
     symbol_table[keyword] = {'token': keyword, 'address': 0,
-                             'type': ''}
+                             'type': '', 'is_func': False, 'parameters': [], 'scope': -1}
 
 
 def get_next_token_for_parser():
