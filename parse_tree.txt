@@ -3,46 +3,73 @@ Program
     └── Declaration
         └── Declaration-initial
             ├── Type-specifier
-            │   ├── (KEYWORD, int)
-            │   └── (ID, arr)
+            │   ├── (KEYWORD, void)
+            │   └── (ID, main)
             └── #pid
-                └── Var-declaration-prime
-                    ├── (SYMBOL, [)
-                    ├── (NUM, 10)
-                    ├── (SYMBOL, ])
-                    ├── (SYMBOL, ;)
-                    └── ;
-                        └── Declaration
-                            └── Declaration-initial
-                                ├── Type-specifier
-                                │   ├── (KEYWORD, int)
-                                │   └── (ID, var1)
-                                └── #pid
-                                    └── Var-declaration-prime
-                                        ├── (SYMBOL, ;)
-                                        └── #init_var
-                                            └── Declaration
-                                                └── Declaration-initial
-                                                    ├── Type-specifier
-                                                    │   ├── (KEYWORD, void)
-                                                    │   └── (ID, main)
-                                                    └── #pid
-                                                        └── Fun-declaration-prime
-                                                            ├── (SYMBOL, ()
-                                                            ├── Params
-                                                            │   ├── (KEYWORD, void)
-                                                            │   └── Param-list-void-abtar
-                                                            │       └── epsilon
-                                                            ├── (SYMBOL, ))
-                                                            └── Compound-stmt
-                                                                ├── (SYMBOL, {)
-                                                                ├── Declaration-list
-                                                                │   └── epsilon
-                                                                └── Statement-list
+                └── Fun-declaration-prime
+                    ├── (SYMBOL, ()
+                    ├── Params
+                    │   ├── (KEYWORD, void)
+                    │   └── Param-list-void-abtar
+                    │       └── epsilon
+                    ├── (SYMBOL, ))
+                    └── Compound-stmt
+                        ├── (SYMBOL, {)
+                        └── Declaration-list
+                            └── Declaration
+                                ├── Declaration-initial
+                                │   ├── Type-specifier
+                                │   │   ├── (KEYWORD, int)
+                                │   │   └── (ID, a)
+                                │   └── ID
+                                │       └── epsilon
+                                └── Declaration-prime
+                                    └── Statement
+                                        └── Expression-stmt
+                                            ├── Expression
+                                            │   └── Simple-expression-zegond
+                                            │       ├── Additive-expression-zegond
+                                            │       │   ├── Term-zegond
+                                            │       │   │   ├── Signed-factor-zegond
+                                            │       │   │   │   └── Factor-zegond
+                                            │       │   │   │       ├── (NUM, 0)
+                                            │       │   │   │       └── NUM
+                                            │       │   │   │           └── epsilon
+                                            │       │   │   └── G
+                                            │       │   │       └── epsilon
+                                            │       │   └── D
+                                            │       │       └── epsilon
+                                            │       └── (SYMBOL, ;)
+                                            └── ;
+                                                └── Statement
+                                                    └── Switch-stmt
+                                                        ├── (KEYWORD, switch)
+                                                        ├── (SYMBOL, ()
+                                                        ├── (
+                                                        │   └── Simple-expression-zegond
+                                                        │       ├── Additive-expression-zegond
+                                                        │       │   ├── Term-zegond
+                                                        │       │   │   ├── Signed-factor-zegond
+                                                        │       │   │   │   └── Factor-zegond
+                                                        │       │   │   │       ├── (NUM, 4)
+                                                        │       │   │   │       └── NUM
+                                                        │       │   │   │           └── epsilon
+                                                        │       │   │   └── G
+                                                        │       │   │       └── epsilon
+                                                        │       │   └── D
+                                                        │       │       └── epsilon
+                                                        │       └── (SYMBOL, ))
+                                                        ├── (SYMBOL, {)
+                                                        └── )
+                                                            └── Case-stmt
+                                                                ├── (KEYWORD, case)
+                                                                ├── (NUM, 4)
+                                                                ├── (SYMBOL, :)
+                                                                └── #case
                                                                     └── Statement
                                                                         └── Expression-stmt
                                                                             └── Expression
-                                                                                ├── (ID, var1)
+                                                                                ├── (ID, a)
                                                                                 └── ID
                                                                                     ├── (SYMBOL, =)
                                                                                     ├── Expression
@@ -51,7 +78,7 @@ Program
                                                                                     │       │   ├── Term-zegond
                                                                                     │       │   │   ├── Signed-factor-zegond
                                                                                     │       │   │   │   └── Factor-zegond
-                                                                                    │       │   │   │       ├── (NUM, 0)
+                                                                                    │       │   │   │       ├── (NUM, 3)
                                                                                     │       │   │   │       └── NUM
                                                                                     │       │   │   │           └── epsilon
                                                                                     │       │   │   └── G
@@ -60,356 +87,87 @@ Program
                                                                                     │       │       └── epsilon
                                                                                     │       └── (SYMBOL, ;)
                                                                                     └── #assign
-                                                                                        └── Statement
-                                                                                            └── Expression-stmt
-                                                                                                └── Expression
-                                                                                                    ├── (ID, arr)
-                                                                                                    └── ID
-                                                                                                        ├── (SYMBOL, [)
-                                                                                                        ├── Expression
-                                                                                                        │   └── Simple-expression-zegond
-                                                                                                        │       ├── Additive-expression-zegond
-                                                                                                        │       │   ├── Term-zegond
-                                                                                                        │       │   │   ├── Signed-factor-zegond
-                                                                                                        │       │   │   │   └── Factor-zegond
-                                                                                                        │       │   │   │       ├── (NUM, 0)
-                                                                                                        │       │   │   │       └── NUM
-                                                                                                        │       │   │   │           └── epsilon
-                                                                                                        │       │   │   └── G
-                                                                                                        │       │   │       └── epsilon
-                                                                                                        │       │   └── D
-                                                                                                        │       │       └── epsilon
-                                                                                                        │       └── (SYMBOL, ])
-                                                                                                        └── ]
-                                                                                                            ├── (SYMBOL, =)
-                                                                                                            ├── Expression
-                                                                                                            │   └── Simple-expression-zegond
-                                                                                                            │       ├── Additive-expression-zegond
-                                                                                                            │       │   ├── Term-zegond
-                                                                                                            │       │   │   ├── Signed-factor-zegond
-                                                                                                            │       │   │   │   └── Factor-zegond
-                                                                                                            │       │   │   │       ├── (NUM, 10)
-                                                                                                            │       │   │   │       └── NUM
-                                                                                                            │       │   │   │           └── epsilon
-                                                                                                            │       │   │   └── G
-                                                                                                            │       │   │       └── epsilon
-                                                                                                            │       │   └── D
-                                                                                                            │       │       └── epsilon
-                                                                                                            │       └── (SYMBOL, ;)
-                                                                                                            └── #assign
-                                                                                                                └── Statement
-                                                                                                                    └── Expression-stmt
-                                                                                                                        └── Expression
-                                                                                                                            ├── (ID, arr)
-                                                                                                                            └── ID
-                                                                                                                                ├── (SYMBOL, [)
-                                                                                                                                ├── Expression
-                                                                                                                                │   └── Simple-expression-zegond
-                                                                                                                                │       ├── Additive-expression-zegond
-                                                                                                                                │       │   ├── Term-zegond
-                                                                                                                                │       │   │   ├── Signed-factor-zegond
-                                                                                                                                │       │   │   │   └── Factor-zegond
-                                                                                                                                │       │   │   │       ├── (NUM, 2)
-                                                                                                                                │       │   │   │       └── NUM
-                                                                                                                                │       │   │   │           └── epsilon
-                                                                                                                                │       │   │   └── G
-                                                                                                                                │       │   │       └── epsilon
-                                                                                                                                │       │   └── D
-                                                                                                                                │       │       └── epsilon
-                                                                                                                                │       └── (SYMBOL, ])
-                                                                                                                                └── ]
-                                                                                                                                    ├── (SYMBOL, =)
-                                                                                                                                    ├── Expression
-                                                                                                                                    │   └── Simple-expression-zegond
-                                                                                                                                    │       ├── Additive-expression-zegond
-                                                                                                                                    │       │   ├── Term-zegond
-                                                                                                                                    │       │   │   ├── Signed-factor-zegond
-                                                                                                                                    │       │   │   │   └── Factor-zegond
-                                                                                                                                    │       │   │   │       ├── (NUM, 100)
-                                                                                                                                    │       │   │   │       └── NUM
-                                                                                                                                    │       │   │   │           └── epsilon
-                                                                                                                                    │       │   │   └── G
-                                                                                                                                    │       │   │       └── epsilon
-                                                                                                                                    │       │   └── D
-                                                                                                                                    │       │       └── epsilon
-                                                                                                                                    │       └── (SYMBOL, ;)
-                                                                                                                                    └── #assign
-                                                                                                                                        └── Statement
-                                                                                                                                            └── Expression-stmt
-                                                                                                                                                └── Expression
-                                                                                                                                                    ├── (ID, arr)
-                                                                                                                                                    └── ID
-                                                                                                                                                        ├── (SYMBOL, [)
-                                                                                                                                                        ├── Expression
-                                                                                                                                                        │   └── Simple-expression-zegond
-                                                                                                                                                        │       ├── Additive-expression-zegond
-                                                                                                                                                        │       │   ├── Term-zegond
-                                                                                                                                                        │       │   │   ├── Signed-factor-zegond
-                                                                                                                                                        │       │   │   │   └── Factor-zegond
-                                                                                                                                                        │       │   │   │       ├── (NUM, 6)
-                                                                                                                                                        │       │   │   │       └── NUM
-                                                                                                                                                        │       │   │   │           └── epsilon
-                                                                                                                                                        │       │   │   └── G
-                                                                                                                                                        │       │   │       └── epsilon
-                                                                                                                                                        │       │   └── D
-                                                                                                                                                        │       │       └── epsilon
-                                                                                                                                                        │       └── (SYMBOL, ])
-                                                                                                                                                        └── ]
-                                                                                                                                                            ├── (SYMBOL, =)
-                                                                                                                                                            ├── Expression
-                                                                                                                                                            │   └── Simple-expression-zegond
-                                                                                                                                                            │       ├── Additive-expression-zegond
-                                                                                                                                                            │       │   ├── Term-zegond
-                                                                                                                                                            │       │   │   ├── Signed-factor-zegond
-                                                                                                                                                            │       │   │   │   └── Factor-zegond
-                                                                                                                                                            │       │   │   │       ├── (NUM, 3)
-                                                                                                                                                            │       │   │   │       └── NUM
-                                                                                                                                                            │       │   │   │           └── epsilon
-                                                                                                                                                            │       │   │   └── G
-                                                                                                                                                            │       │   │       └── epsilon
-                                                                                                                                                            │       │   └── D
-                                                                                                                                                            │       │       └── epsilon
-                                                                                                                                                            │       └── (SYMBOL, ;)
-                                                                                                                                                            └── #assign
-                                                                                                                                                                └── Statement
-                                                                                                                                                                    └── Expression-stmt
-                                                                                                                                                                        └── Expression
-                                                                                                                                                                            ├── (ID, arr)
-                                                                                                                                                                            └── ID
-                                                                                                                                                                                ├── (SYMBOL, [)
-                                                                                                                                                                                ├── Expression
-                                                                                                                                                                                │   └── Simple-expression-zegond
-                                                                                                                                                                                │       ├── Additive-expression-zegond
-                                                                                                                                                                                │       │   ├── Term-zegond
-                                                                                                                                                                                │       │   │   ├── Signed-factor-zegond
-                                                                                                                                                                                │       │   │   │   └── Factor-zegond
-                                                                                                                                                                                │       │   │   │       ├── (NUM, 9)
-                                                                                                                                                                                │       │   │   │       └── NUM
-                                                                                                                                                                                │       │   │   │           └── epsilon
-                                                                                                                                                                                │       │   │   └── G
-                                                                                                                                                                                │       │   │       └── epsilon
-                                                                                                                                                                                │       │   └── D
-                                                                                                                                                                                │       │       └── epsilon
-                                                                                                                                                                                │       └── (SYMBOL, ])
-                                                                                                                                                                                └── ]
-                                                                                                                                                                                    ├── (SYMBOL, =)
-                                                                                                                                                                                    ├── Expression
-                                                                                                                                                                                    │   └── Simple-expression-zegond
-                                                                                                                                                                                    │       ├── Additive-expression-zegond
-                                                                                                                                                                                    │       │   ├── Term-zegond
-                                                                                                                                                                                    │       │   │   ├── Signed-factor-zegond
-                                                                                                                                                                                    │       │   │   │   └── Factor-zegond
-                                                                                                                                                                                    │       │   │   │       ├── (NUM, 5)
-                                                                                                                                                                                    │       │   │   │       └── NUM
-                                                                                                                                                                                    │       │   │   │           └── epsilon
-                                                                                                                                                                                    │       │   │   └── G
-                                                                                                                                                                                    │       │   │       └── epsilon
-                                                                                                                                                                                    │       │   └── D
-                                                                                                                                                                                    │       │       └── epsilon
-                                                                                                                                                                                    │       └── (SYMBOL, ;)
-                                                                                                                                                                                    └── #assign
-                                                                                                                                                                                        └── Statement
-                                                                                                                                                                                            └── Expression-stmt
-                                                                                                                                                                                                └── Expression
-                                                                                                                                                                                                    ├── (ID, output)
-                                                                                                                                                                                                    └── ID
-                                                                                                                                                                                                        └── Simple-expression-prime
-                                                                                                                                                                                                            └── Additive-expression-prime
-                                                                                                                                                                                                                └── Term-prime
-                                                                                                                                                                                                                    ├── Signed-factor-prime
-                                                                                                                                                                                                                    │   └── Factor-prime
-                                                                                                                                                                                                                    │       ├── (SYMBOL, ()
-                                                                                                                                                                                                                    │       ├── Args
-                                                                                                                                                                                                                    │       │   └── Arg-list
-                                                                                                                                                                                                                    │       │       ├── Expression
-                                                                                                                                                                                                                    │       │       │   ├── (ID, arr)
-                                                                                                                                                                                                                    │       │       │   ├── ID
-                                                                                                                                                                                                                    │       │       │   │   ├── (SYMBOL, [)
-                                                                                                                                                                                                                    │       │       │   │   ├── Expression
-                                                                                                                                                                                                                    │       │       │   │   │   ├── (ID, var1)
-                                                                                                                                                                                                                    │       │       │   │   │   ├── ID
-                                                                                                                                                                                                                    │       │       │   │   │   │   └── Simple-expression-prime
-                                                                                                                                                                                                                    │       │       │   │   │   │       ├── Additive-expression-prime
-                                                                                                                                                                                                                    │       │       │   │   │   │       │   ├── Term-prime
-                                                                                                                                                                                                                    │       │       │   │   │   │       │   │   ├── Signed-factor-prime
-                                                                                                                                                                                                                    │       │       │   │   │   │       │   │   │   └── Factor-prime
-                                                                                                                                                                                                                    │       │       │   │   │   │       │   │   │       └── epsilon
-                                                                                                                                                                                                                    │       │       │   │   │   │       │   │   └── G
-                                                                                                                                                                                                                    │       │       │   │   │   │       │   │       └── epsilon
-                                                                                                                                                                                                                    │       │       │   │   │   │       │   └── D
-                                                                                                                                                                                                                    │       │       │   │   │   │       │       └── epsilon
-                                                                                                                                                                                                                    │       │       │   │   │   │       └── C
-                                                                                                                                                                                                                    │       │       │   │   │   │           └── epsilon
-                                                                                                                                                                                                                    │       │       │   │   │   └── (SYMBOL, ])
-                                                                                                                                                                                                                    │       │       │   │   ├── ]
-                                                                                                                                                                                                                    │       │       │   │   │   ├── G
-                                                                                                                                                                                                                    │       │       │   │   │   │   └── epsilon
-                                                                                                                                                                                                                    │       │       │   │   │   ├── D
-                                                                                                                                                                                                                    │       │       │   │   │   │   └── epsilon
-                                                                                                                                                                                                                    │       │       │   │   │   └── C
-                                                                                                                                                                                                                    │       │       │   │   │       └── epsilon
-                                                                                                                                                                                                                    │       │       │   │   ├── #set_array_address
-                                                                                                                                                                                                                    │       │       │   │   │   └── epsilon
-                                                                                                                                                                                                                    │       │       │   │   └── (SYMBOL, ))
-                                                                                                                                                                                                                    │       │       │   └── B
-                                                                                                                                                                                                                    │       │       │       └── epsilon
-                                                                                                                                                                                                                    │       │       └── Arg-list-prime
-                                                                                                                                                                                                                    │       │           └── epsilon
-                                                                                                                                                                                                                    │       ├── #output
-                                                                                                                                                                                                                    │       │   └── epsilon
-                                                                                                                                                                                                                    │       └── (SYMBOL, ;)
-                                                                                                                                                                                                                    └── G
-                                                                                                                                                                                                                        └── Statement
-                                                                                                                                                                                                                            └── Expression-stmt
-                                                                                                                                                                                                                                └── Expression
-                                                                                                                                                                                                                                    ├── (ID, output)
-                                                                                                                                                                                                                                    └── ID
-                                                                                                                                                                                                                                        └── Simple-expression-prime
-                                                                                                                                                                                                                                            ├── Additive-expression-prime
-                                                                                                                                                                                                                                            │   ├── Term-prime
-                                                                                                                                                                                                                                            │   │   ├── Signed-factor-prime
-                                                                                                                                                                                                                                            │   │   │   └── Factor-prime
-                                                                                                                                                                                                                                            │   │   │       ├── (SYMBOL, ()
-                                                                                                                                                                                                                                            │   │   │       ├── Args
-                                                                                                                                                                                                                                            │   │   │       │   └── Arg-list
-                                                                                                                                                                                                                                            │   │   │       │       ├── Expression
-                                                                                                                                                                                                                                            │   │   │       │       │   └── Simple-expression-zegond
-                                                                                                                                                                                                                                            │   │   │       │       │       ├── Additive-expression-zegond
-                                                                                                                                                                                                                                            │   │   │       │       │       │   ├── Term-zegond
-                                                                                                                                                                                                                                            │   │   │       │       │       │   │   ├── Signed-factor-zegond
-                                                                                                                                                                                                                                            │   │   │       │       │       │   │   │   └── Factor-zegond
-                                                                                                                                                                                                                                            │   │   │       │       │       │   │   │       ├── (NUM, 1234)
-                                                                                                                                                                                                                                            │   │   │       │       │       │   │   │       └── NUM
-                                                                                                                                                                                                                                            │   │   │       │       │       │   │   │           └── epsilon
-                                                                                                                                                                                                                                            │   │   │       │       │       │   │   └── G
-                                                                                                                                                                                                                                            │   │   │       │       │       │   │       └── epsilon
-                                                                                                                                                                                                                                            │   │   │       │       │       │   └── D
-                                                                                                                                                                                                                                            │   │   │       │       │       │       └── epsilon
-                                                                                                                                                                                                                                            │   │   │       │       │       └── C
-                                                                                                                                                                                                                                            │   │   │       │       │           └── epsilon
-                                                                                                                                                                                                                                            │   │   │       │       └── (SYMBOL, ))
-                                                                                                                                                                                                                                            │   │   │       ├── #output
-                                                                                                                                                                                                                                            │   │   │       │   └── epsilon
-                                                                                                                                                                                                                                            │   │   │       └── )
-                                                                                                                                                                                                                                            │   │   │           └── epsilon
-                                                                                                                                                                                                                                            │   │   └── G
-                                                                                                                                                                                                                                            │   │       └── epsilon
-                                                                                                                                                                                                                                            │   └── (SYMBOL, ;)
-                                                                                                                                                                                                                                            └── C
-                                                                                                                                                                                                                                                └── Statement
-                                                                                                                                                                                                                                                    └── Expression-stmt
-                                                                                                                                                                                                                                                        └── Expression
-                                                                                                                                                                                                                                                            ├── (ID, output)
-                                                                                                                                                                                                                                                            └── ID
-                                                                                                                                                                                                                                                                └── Simple-expression-prime
-                                                                                                                                                                                                                                                                    └── Additive-expression-prime
-                                                                                                                                                                                                                                                                        └── Term-prime
-                                                                                                                                                                                                                                                                            └── Signed-factor-prime
-                                                                                                                                                                                                                                                                                └── Factor-prime
-                                                                                                                                                                                                                                                                                    ├── (SYMBOL, ()
-                                                                                                                                                                                                                                                                                    └── Args
-                                                                                                                                                                                                                                                                                        └── Arg-list
-                                                                                                                                                                                                                                                                                            └── Expression
-                                                                                                                                                                                                                                                                                                ├── (ID, arr)
-                                                                                                                                                                                                                                                                                                └── ID
-                                                                                                                                                                                                                                                                                                    ├── (SYMBOL, [)
-                                                                                                                                                                                                                                                                                                    └── Expression
-                                                                                                                                                                                                                                                                                                        ├── (ID, arr)
-                                                                                                                                                                                                                                                                                                        └── ID
-                                                                                                                                                                                                                                                                                                            ├── (SYMBOL, [)
-                                                                                                                                                                                                                                                                                                            └── Expression
-                                                                                                                                                                                                                                                                                                                ├── (ID, arr)
-                                                                                                                                                                                                                                                                                                                ├── ID
-                                                                                                                                                                                                                                                                                                                │   ├── (SYMBOL, [)
-                                                                                                                                                                                                                                                                                                                │   ├── Expression
-                                                                                                                                                                                                                                                                                                                │   │   ├── (ID, arr)
-                                                                                                                                                                                                                                                                                                                │   │   ├── ID
-                                                                                                                                                                                                                                                                                                                │   │   │   ├── (SYMBOL, [)
-                                                                                                                                                                                                                                                                                                                │   │   │   ├── Expression
-                                                                                                                                                                                                                                                                                                                │   │   │   │   └── Simple-expression-zegond
-                                                                                                                                                                                                                                                                                                                │   │   │   │       ├── Additive-expression-zegond
-                                                                                                                                                                                                                                                                                                                │   │   │   │       │   ├── Term-zegond
-                                                                                                                                                                                                                                                                                                                │   │   │   │       │   │   ├── Signed-factor-zegond
-                                                                                                                                                                                                                                                                                                                │   │   │   │       │   │   │   └── Factor-zegond
-                                                                                                                                                                                                                                                                                                                │   │   │   │       │   │   │       ├── (NUM, 0)
-                                                                                                                                                                                                                                                                                                                │   │   │   │       │   │   │       └── NUM
-                                                                                                                                                                                                                                                                                                                │   │   │   │       │   │   │           └── epsilon
-                                                                                                                                                                                                                                                                                                                │   │   │   │       │   │   └── G
-                                                                                                                                                                                                                                                                                                                │   │   │   │       │   │       └── epsilon
-                                                                                                                                                                                                                                                                                                                │   │   │   │       │   └── D
-                                                                                                                                                                                                                                                                                                                │   │   │   │       │       └── epsilon
-                                                                                                                                                                                                                                                                                                                │   │   │   │       └── (SYMBOL, ])
-                                                                                                                                                                                                                                                                                                                │   │   │   ├── ]
-                                                                                                                                                                                                                                                                                                                │   │   │   │   ├── G
-                                                                                                                                                                                                                                                                                                                │   │   │   │   │   └── epsilon
-                                                                                                                                                                                                                                                                                                                │   │   │   │   ├── D
-                                                                                                                                                                                                                                                                                                                │   │   │   │   │   ├── Addop
-                                                                                                                                                                                                                                                                                                                │   │   │   │   │   │   ├── (SYMBOL, -)
-                                                                                                                                                                                                                                                                                                                │   │   │   │   │   │   └── #push_2
-                                                                                                                                                                                                                                                                                                                │   │   │   │   │   │       ├── Signed-factor
-                                                                                                                                                                                                                                                                                                                │   │   │   │   │   │       │   └── Factor
-                                                                                                                                                                                                                                                                                                                │   │   │   │   │   │       │       ├── (NUM, 1)
-                                                                                                                                                                                                                                                                                                                │   │   │   │   │   │       │       └── NUM
-                                                                                                                                                                                                                                                                                                                │   │   │   │   │   │       │           └── epsilon
-                                                                                                                                                                                                                                                                                                                │   │   │   │   │   │       └── G
-                                                                                                                                                                                                                                                                                                                │   │   │   │   │   │           └── epsilon
-                                                                                                                                                                                                                                                                                                                │   │   │   │   │   ├── Term
-                                                                                                                                                                                                                                                                                                                │   │   │   │   │   │   └── epsilon
-                                                                                                                                                                                                                                                                                                                │   │   │   │   │   ├── (SYMBOL, ])
-                                                                                                                                                                                                                                                                                                                │   │   │   │   │   └── D
-                                                                                                                                                                                                                                                                                                                │   │   │   │   │       ├── G
-                                                                                                                                                                                                                                                                                                                │   │   │   │   │       │   └── epsilon
-                                                                                                                                                                                                                                                                                                                │   │   │   │   │       ├── D
-                                                                                                                                                                                                                                                                                                                │   │   │   │   │       │   ├── Addop
-                                                                                                                                                                                                                                                                                                                │   │   │   │   │       │   │   ├── (SYMBOL, +)
-                                                                                                                                                                                                                                                                                                                │   │   │   │   │       │   │   └── #push_1
-                                                                                                                                                                                                                                                                                                                │   │   │   │   │       │   │       ├── Signed-factor
-                                                                                                                                                                                                                                                                                                                │   │   │   │   │       │   │       │   └── Factor
-                                                                                                                                                                                                                                                                                                                │   │   │   │   │       │   │       │       ├── (NUM, 1)
-                                                                                                                                                                                                                                                                                                                │   │   │   │   │       │   │       │       └── NUM
-                                                                                                                                                                                                                                                                                                                │   │   │   │   │       │   │       │           └── epsilon
-                                                                                                                                                                                                                                                                                                                │   │   │   │   │       │   │       └── G
-                                                                                                                                                                                                                                                                                                                │   │   │   │   │       │   │           └── epsilon
-                                                                                                                                                                                                                                                                                                                │   │   │   │   │       │   ├── Term
-                                                                                                                                                                                                                                                                                                                │   │   │   │   │       │   │   └── epsilon
-                                                                                                                                                                                                                                                                                                                │   │   │   │   │       │   ├── (SYMBOL, ])
-                                                                                                                                                                                                                                                                                                                │   │   │   │   │       │   └── D
-                                                                                                                                                                                                                                                                                                                │   │   │   │   │       │       ├── G
-                                                                                                                                                                                                                                                                                                                │   │   │   │   │       │       │   └── epsilon
-                                                                                                                                                                                                                                                                                                                │   │   │   │   │       │       ├── D
-                                                                                                                                                                                                                                                                                                                │   │   │   │   │       │       │   ├── Addop
-                                                                                                                                                                                                                                                                                                                │   │   │   │   │       │       │   │   ├── (SYMBOL, -)
-                                                                                                                                                                                                                                                                                                                │   │   │   │   │       │       │   │   └── #push_2
-                                                                                                                                                                                                                                                                                                                │   │   │   │   │       │       │   │       ├── Signed-factor
-                                                                                                                                                                                                                                                                                                                │   │   │   │   │       │       │   │       │   └── Factor
-                                                                                                                                                                                                                                                                                                                │   │   │   │   │       │       │   │       │       ├── (NUM, 1)
-                                                                                                                                                                                                                                                                                                                │   │   │   │   │       │       │   │       │       └── NUM
-                                                                                                                                                                                                                                                                                                                │   │   │   │   │       │       │   │       │           └── epsilon
-                                                                                                                                                                                                                                                                                                                │   │   │   │   │       │       │   │       └── G
-                                                                                                                                                                                                                                                                                                                │   │   │   │   │       │       │   │           └── epsilon
-                                                                                                                                                                                                                                                                                                                │   │   │   │   │       │       │   ├── Term
-                                                                                                                                                                                                                                                                                                                │   │   │   │   │       │       │   │   └── epsilon
-                                                                                                                                                                                                                                                                                                                │   │   │   │   │       │       │   ├── (SYMBOL, ])
-                                                                                                                                                                                                                                                                                                                │   │   │   │   │       │       │   └── D
-                                                                                                                                                                                                                                                                                                                │   │   │   │   │       │       │       ├── G
-                                                                                                                                                                                                                                                                                                                │   │   │   │   │       │       │       │   └── epsilon
-                                                                                                                                                                                                                                                                                                                │   │   │   │   │       │       │       ├── D
-                                                                                                                                                                                                                                                                                                                │   │   │   │   │       │       │       │   └── epsilon
-                                                                                                                                                                                                                                                                                                                │   │   │   │   │       │       │       └── C
-                                                                                                                                                                                                                                                                                                                │   │   │   │   │       │       │           └── epsilon
-                                                                                                                                                                                                                                                                                                                │   │   │   │   │       │       └── C
-                                                                                                                                                                                                                                                                                                                │   │   │   │   │       │           └── epsilon
-                                                                                                                                                                                                                                                                                                                │   │   │   │   │       └── (SYMBOL, ))
-                                                                                                                                                                                                                                                                                                                │   │   │   │   └── C
-                                                                                                                                                                                                                                                                                                                │   │   │   │       └── epsilon
-                                                                                                                                                                                                                                                                                                                │   │   │   ├── #set_array_address
-                                                                                                                                                                                                                                                                                                                │   │   │   │   └── epsilon
-                                                                                                                                                                                                                                                                                                                │   │   │   └── H
-                                                                                                                                                                                                                                                                                                                │   │   │       └── epsilon
-                                                                                                                                                                                                                                                                                                                │   │   └── (SYMBOL, ;)
-                                                                                                                                                                                                                                                                                                                │   ├── ]
-                                                                                                                                                                                                                                                                                                                │   │   └── epsilon
-                                                                                                                                                                                                                                                                                                                │   ├── (SYMBOL, })
-                                                                                                                                                                                                                                                                                                                │   └── H
-                                                                                                                                                                                                                                                                                                                │       └── epsilon
-                                                                                                                                                                                                                                                                                                                └── B
+                                                                                        ├── Statement
+                                                                                        │   └── Expression-stmt
+                                                                                        │       ├── (KEYWORD, break)
+                                                                                        │       ├── (SYMBOL, ;)
+                                                                                        │       └── ;
+                                                                                        │           └── epsilon
+                                                                                        └── Statement-list
+                                                                                            └── Case-stmt
+                                                                                                ├── (KEYWORD, case)
+                                                                                                ├── (NUM, 5)
+                                                                                                ├── (SYMBOL, :)
+                                                                                                └── #case
+                                                                                                    ├── Statement
+                                                                                                    │   └── Expression-stmt
+                                                                                                    │       ├── Expression
+                                                                                                    │       │   ├── (ID, a)
+                                                                                                    │       │   ├── ID
+                                                                                                    │       │   │   ├── (SYMBOL, =)
+                                                                                                    │       │   │   ├── Expression
+                                                                                                    │       │   │   │   └── Simple-expression-zegond
+                                                                                                    │       │   │   │       ├── Additive-expression-zegond
+                                                                                                    │       │   │   │       │   ├── Term-zegond
+                                                                                                    │       │   │   │       │   │   ├── Signed-factor-zegond
+                                                                                                    │       │   │   │       │   │   │   └── Factor-zegond
+                                                                                                    │       │   │   │       │   │   │       ├── (NUM, 1)
+                                                                                                    │       │   │   │       │   │   │       └── NUM
+                                                                                                    │       │   │   │       │   │   │           └── epsilon
+                                                                                                    │       │   │   │       │   │   └── G
+                                                                                                    │       │   │   │       │   │       └── epsilon
+                                                                                                    │       │   │   │       │   └── D
+                                                                                                    │       │   │   │       │       └── epsilon
+                                                                                                    │       │   │   │       └── (SYMBOL, ;)
+                                                                                                    │       │   │   └── #assign
+                                                                                                    │       │   │       └── epsilon
+                                                                                                    │       │   └── B
+                                                                                                    │       │       └── epsilon
+                                                                                                    │       ├── ;
+                                                                                                    │       │   └── epsilon
+                                                                                                    │       └── (SYMBOL, })
+                                                                                                    └── Statement-list
+                                                                                                        └── Statement
+                                                                                                            └── Expression-stmt
+                                                                                                                ├── Expression
+                                                                                                                │   ├── (ID, output)
+                                                                                                                │   ├── ID
+                                                                                                                │   │   └── Simple-expression-prime
+                                                                                                                │   │       ├── Additive-expression-prime
+                                                                                                                │   │       │   ├── Term-prime
+                                                                                                                │   │       │   │   ├── Signed-factor-prime
+                                                                                                                │   │       │   │   │   └── Factor-prime
+                                                                                                                │   │       │   │   │       ├── (SYMBOL, ()
+                                                                                                                │   │       │   │   │       ├── Args
+                                                                                                                │   │       │   │   │       │   └── Arg-list
+                                                                                                                │   │       │   │   │       │       ├── Expression
+                                                                                                                │   │       │   │   │       │       │   ├── (ID, a)
+                                                                                                                │   │       │   │   │       │       │   ├── ID
+                                                                                                                │   │       │   │   │       │       │   │   └── Simple-expression-prime
+                                                                                                                │   │       │   │   │       │       │   │       ├── Additive-expression-prime
+                                                                                                                │   │       │   │   │       │       │   │       │   ├── Term-prime
+                                                                                                                │   │       │   │   │       │       │   │       │   │   ├── Signed-factor-prime
+                                                                                                                │   │       │   │   │       │       │   │       │   │   │   └── Factor-prime
+                                                                                                                │   │       │   │   │       │       │   │       │   │   │       └── epsilon
+                                                                                                                │   │       │   │   │       │       │   │       │   │   └── G
+                                                                                                                │   │       │   │   │       │       │   │       │   │       └── epsilon
+                                                                                                                │   │       │   │   │       │       │   │       │   └── D
+                                                                                                                │   │       │   │   │       │       │   │       │       └── epsilon
+                                                                                                                │   │       │   │   │       │       │   │       └── C
+                                                                                                                │   │       │   │   │       │       │   │           └── epsilon
+                                                                                                                │   │       │   │   │       │       │   └── B
+                                                                                                                │   │       │   │   │       │       │       └── epsilon
+                                                                                                                │   │       │   │   │       │       └── (SYMBOL, ))
+                                                                                                                │   │       │   │   │       ├── #output
+                                                                                                                │   │       │   │   │       │   └── epsilon
+                                                                                                                │   │       │   │   │       └── )
+                                                                                                                │   │       │   │   │           └── epsilon
+                                                                                                                │   │       │   │   └── G
+                                                                                                                │   │       │   │       └── epsilon
+                                                                                                                │   │       │   └── (SYMBOL, ;)
+                                                                                                                │   │       └── C
+                                                                                                                │   │           └── epsilon
+                                                                                                                │   └── (SYMBOL, })
+                                                                                                                ├── ;
+                                                                                                                │   └── epsilon
+                                                                                                                └── #pop

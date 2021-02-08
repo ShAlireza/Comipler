@@ -1,5 +1,6 @@
 from scanner import findaddr, get_temp, increase_data_pointer
 from semantic_stack import SemanticStack
+from help import function_table
 
 
 class CodeGenerator:
@@ -8,6 +9,7 @@ class CodeGenerator:
         self.semantic_stack = semantic_stack
         self.pb = ['0'] * 1000
         self.index = 0
+        self.function_table = function_table()
 
     def __call__(self, action, **kwargs):
         return getattr(self, '_' + action)(**kwargs)
@@ -158,7 +160,7 @@ class CodeGenerator:
 
     def _case(self, **kwargs):
         result = get_temp()
-        self.pb[self.index] = f"(EQ, {self.semantic_stack.top(1)}, {self.semantic_stack.top(2)}, {result}"
+        self.pb[self.index] = f"(EQ, {self.semantic_stack.top(1)}, {self.semantic_stack.top(2)}, {result})"
         self.semantic_stack.pop()
         self.index += 1
         self.semantic_stack.push(result)
@@ -166,7 +168,7 @@ class CodeGenerator:
     def _jp_case(self, **kwargs):
         address = self.semantic_stack.top()
         self.semantic_stack.pop()
-        self.pb[address] = f"(JPF, {self.semantic_stack.top()}, {self.index}, "
+        self.pb[address] = f"(JPF, {self.semantic_stack.top()}, {self.index}, )"
         self.semantic_stack.pop()
 
     def _break_temp(self, **kwargs):

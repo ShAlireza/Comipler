@@ -1,14 +1,12 @@
 /*  ==== T6  ====*/
-int arr[10];
-int var1;
-
 void main(void) {
-     var1 = 0;
-     arr[0] = 10;
-     arr[2] = 100;
-     arr[6] = 3;
-     arr[9] = 5;
-     output(arr[var1]);
-     output(1234);
-     output(arr[arr[arr[arr[0] - 1] + 1] - 1]);
+    int a = 0;
+     switch(4) {
+     case 4:
+        a = 3;
+        break;
+     case 5:
+        a = 1;
+     }
+     output(a);
 }
