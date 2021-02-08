@@ -17,6 +17,7 @@ class CodeGenerator:
         self.func_names = None
         self.ra = []
         self.main_seen = False
+        self.retrun_temp = get_temp()
 
     def __call__(self, action, **kwargs):
         return getattr(self, '_' + action)(**kwargs)
@@ -310,9 +311,11 @@ class CodeGenerator:
         self.func_number_of_args = -1
         self.arg_counter = -1
         self.ra.append(self.index)
+        self.pb[self.index] = f"(ASSIGN, #{self.index + 2}, {self.retrun_temp}, )"
+        self.index += 1
         self.pb[self.index] = f"(JP, {self.function_table.funcs[self.func_names]['start_address']}, , )"
         self.index += 1
-        self.pb[self.function_table.funcs[self.func_names]['return_address']] = f"(JP, #{self.index}, , )"
+        self.pb[self.function_table.funcs[self.func_names]['return_address']] = f"(JP, @{self.retrun_temp}, , )"
         self.func_names = None
 
     def _return(self, **kwargs):
