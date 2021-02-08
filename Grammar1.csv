@@ -29,17 +29,17 @@ Statement Iteration-stmt
 Statement Return-stmt
 Statement Switch-stmt
 Expression-stmt Expression ; #pop
-Expression-stmt break ; #jp_temp_break(pop(3),temp_compeletion,temp_pop)
+Expression-stmt break #break ;
 Expression-stmt ;
 Selection-stmt if ( Expression #save ) Statement #jpf_save else Statement #jp
-Iteration-stmt #break_temp while ( #label Expression #save ) Statement #while #assign_break
+Iteration-stmt #break_temp while ( #label Expression #save ) Statement #while #set_break_temp
 Return-stmt return Return-stmt-prime
 Return-stmt-prime ;
 Return-stmt-prime Expression ; #pop
-Switch-stmt #break_temp switch ( Expression ) { Case-stmts Default-stmt } #pop(1) #assign_break
+Switch-stmt #break_temp switch ( Expression ) { Case-stmts Default-stmt } #pop #set_break_temp
 Case-stmts Case-stmt Case-stmts
 Case-stmts eps
-Case-stmt case #pnum NUM #save : Statement-list #jp_case(pop(2))
+Case-stmt case #pnum NUM #case #save : Statement-list #jp_case
 Default-stmt default : Statement-list
 Default-stmt eps
 Expression Simple-expression-zegond

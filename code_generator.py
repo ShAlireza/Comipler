@@ -155,3 +155,30 @@ class CodeGenerator:
                                    f'{self.semantic_stack.top(2) + i * 4})')
             self.index += 1
         increase_data_pointer(size - 1)
+
+    def _case(self, **kwargs):
+        result = get_temp()
+        self.pb[self.index] = f"(EQ, {self.semantic_stack.top(1)}, {self.semantic_stack.top(2)}, {result}"
+        self.semantic_stack.pop()
+        self.index += 1
+        self.semantic_stack.push(result)
+
+    def _jp_case(self, **kwargs):
+        address = self.semantic_stack.top()
+        self.semantic_stack.pop()
+        self.pb[address] = f"(JPF, {self.semantic_stack.top()}, {self.index}, "
+        self.semantic_stack.pop()
+
+    def _break_temp(self, **kwargs):
+        temp = get_temp()
+        self.semantic_stack.push(temp)
+        self._save()
+
+    def _break(self, **kwargs):
+        self.pb[self.index] = f"(JP, @{self.semantic_stack.top(5)}, , )"
+        self.index += 1
+
+    def _set_break_temp(self, **kwargs):
+        self.pb[self.semantic_stack.top()] = f"(ASSIGN, #{self.index}, {self.semantic_stack.top(2)}, )"
+        self.semantic_stack.pop(2)
+
