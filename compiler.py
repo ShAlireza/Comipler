@@ -229,7 +229,6 @@ class Parser:
                             line_number=scanner.line_num)
                         break
 
-                        # break
 
     def compute_first(self, expression):
         # expression would be something like "[ NoneTerminal ] +"

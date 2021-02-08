@@ -10,6 +10,7 @@ class CodeGenerator:
         self.pb = ['0'] * 1000
         self.index = 0
         self.function_table = function_table()
+        self.inside_if = False
 
     def __call__(self, action, **kwargs):
         return getattr(self, '_' + action)(**kwargs)
@@ -48,6 +49,7 @@ class CodeGenerator:
         self.index += 1
 
     def _compare(self, **kwargs):
+        print(self.semantic_stack._stack, "COMPARE")
         temp = get_temp()
         operator = 'EQ'
         if self.semantic_stack.top(2) == 1:
@@ -177,10 +179,23 @@ class CodeGenerator:
         self._save()
 
     def _break(self, **kwargs):
-        self.pb[self.index] = f"(JP, @{self.semantic_stack.top(5)}, , )"
-        self.index += 1
+        print(self.semantic_stack._stack, "BREAK")
+        if self.inside_if:
+            self.pb[self.index] = f"(JP, @{self.semantic_stack.top(7)}, , )"
+            self.index += 1
+            self.inside_if = False
+        else:
+            self.pb[self.index] = f"(JP, @{self.semantic_stack.top(5)}, , )"
+            self.index += 1
 
     def _set_break_temp(self, **kwargs):
         self.pb[self.semantic_stack.top()] = f"(ASSIGN, #{self.index}, {self.semantic_stack.top(2)}, )"
+        print(self.semantic_stack._stack)
         self.semantic_stack.pop(2)
+
+    def _if(self, **kwargs):
+        print(self.semantic_stack._stack, "BEFORE IF")
+        self.inside_if = True
+
+
 

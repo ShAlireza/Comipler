@@ -36,11 +36,3 @@ class function_table:
 
     def get_parameter(self, func_name, param_name):
         return self.params.get(func_name+'_'+param_name)
-
-
-
-
-
-
-
-

@@ -1,7 +1,7 @@
 Program Declaration-list $
 Declaration-list Declaration Declaration-list
 Declaration-list eps
-Declaration Declaration-initial Declaration-prime #pop
+Declaration Declaration-initial Declaration-prime
 Declaration-initial Type-specifier #pid ID
 Declaration-prime Fun-declaration-prime
 Declaration-prime Var-declaration-prime
@@ -31,7 +31,7 @@ Statement Switch-stmt
 Expression-stmt Expression ; #pop
 Expression-stmt break #break ;
 Expression-stmt ;
-Selection-stmt if ( Expression #save ) Statement #jpf_save else Statement #jp
+Selection-stmt if #if ( Expression #save ) Statement #jpf_save else Statement #jp
 Iteration-stmt #break_temp while ( #label Expression #save ) Statement #while #set_break_temp
 Return-stmt return Return-stmt-prime
 Return-stmt-prime ;

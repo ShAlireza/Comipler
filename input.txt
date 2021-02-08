@@ -1,12 +1,12 @@
 /*  ==== T6  ====*/
 void main(void) {
-    int a = 0;
-     switch(4) {
-     case 4:
-        a = 3;
-        break;
-     case 5:
-        a = 1;
-     }
-     output(a);
+    int a;
+    a = 0;
+    while ( a < 5 ) {
+        if ( a == 3 ) {
+            break;
+        }
+        a = a + 1;
+    }
+    output(a);
 }

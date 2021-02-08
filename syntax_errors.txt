@@ -1,2 +1,1 @@
-#3 : Syntax Error, illegal =
-#3 : Syntax Error, missing Declaration-prime
+#9 : Syntax Error, missing else
