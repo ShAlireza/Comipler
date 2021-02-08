@@ -3,22 +3,22 @@ Declaration-list Declaration Declaration-list
 Declaration-list eps
 Declaration Declaration-initial Declaration-prime
 Declaration-initial Type-specifier #pid ID
-Declaration-prime Fun-declaration-prime
+Declaration-prime #func_declared Fun-declaration-prime
 Declaration-prime Var-declaration-prime
 Var-declaration-prime ; #init_var
 Var-declaration-prime [ #pnum NUM ] ; #init_array
-Fun-declaration-prime ( Params ) Compound-stmt
+Fun-declaration-prime ( Params ) #set_func_start Compound-stmt
 Type-specifier int #push_1
 Type-specifier void #push_2
 Params int #push_int #pid ID Param-prime Param-list
-Params void Param-list-void-abtar
+Params void #push_void Param-list-void-abtar
 Param-list-void-abtar #pid ID Param-prime Param-list
-Param-list-void-abtar eps
+Param-list-void-abtar eps #void_parameter_added
 Param-list , Param Param-list
 Param-list eps
 Param Declaration-initial Param-prime
-Param-prime [ ]
-Param-prime eps
+Param-prime [ ] #param_array_added
+Param-prime eps #param_added
 Compound-stmt { Declaration-list Statement-list }
 Statement-list Statement Statement-list
 Statement-list eps
@@ -34,8 +34,8 @@ Expression-stmt ;
 Selection-stmt if #if ( Expression #save ) Statement #jpf_save else Statement #jp
 Iteration-stmt #break_temp while ( #label Expression #save ) Statement #while #set_break_temp
 Return-stmt return Return-stmt-prime
-Return-stmt-prime ;
-Return-stmt-prime Expression ; #pop
+Return-stmt-prime ; #pop #pop
+Return-stmt-prime Expression #assign ; #pop #pop
 Switch-stmt #break_temp switch ( Expression ) { Case-stmts Default-stmt } #pop #set_break_temp
 Case-stmts Case-stmt Case-stmts
 Case-stmts eps
@@ -77,16 +77,16 @@ Signed-factor-zegond Factor-zegond
 Factor ( Expression )
 Factor #pid ID Var-call-prime
 Factor #pnum NUM
-Var-call-prime ( Args )
+Var-call-prime #func_call_started ( Args ) #func_call_ended
 Var-call-prime Var-prime
 Var-prime [ Expression ] #set_array_address
 Var-prime eps
-Factor-prime ( Args #output )
+Factor-prime #func_call_started ( Args #output ) #func_call_ended
 Factor-prime eps
 Factor-zegond ( Expression )
 Factor-zegond #pnum NUM
 Args Arg-list
 Args eps
-Arg-list Expression Arg-list-prime
+Arg-list #push_arg Expression #assign #pop Arg-list-prime
 Arg-list-prime , Expression Arg-list-prime
 Arg-list-prime eps

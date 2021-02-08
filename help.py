@@ -25,11 +25,17 @@ class function_table:
         self.funcs = {}
         self.params = {}
 
-    def add_function(self, name, address, params, return_type, params_type, params_addresses):
-        self.funcs[name] = {'address': address, 'params': [], 'type': return_type}
-        for i in range(len(params)):
-            self.funcs[name]['params'].append(name + '_' + params[i])
-            self.params[name + '_' + params[i]] = {'address': params_addresses[i], 'type': params_type[i]}
+    def func_declare(self, name, address, return_type):
+        self.funcs[name] = {'address': address, 'type': return_type,
+                            'params': [], 'params_type': [], 'params_address': [], 'params_array': []}
+
+    def add_param(self, func_name, param_name, param_type, param_address, is_array):
+        print(self.funcs)
+        self.funcs[func_name]['params'].append(param_name)
+        self.funcs[func_name]['params_type'].append(param_type)
+        self.funcs[func_name]['params_address'].append(param_address)
+        self.funcs[func_name]['params_array'].append(is_array)
+        print(self.funcs)
 
     def get_function(self, name):
         return self.funcs.get(name)
