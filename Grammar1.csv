@@ -7,7 +7,7 @@ Declaration-prime #func_declared Fun-declaration-prime
 Declaration-prime Var-declaration-prime
 Var-declaration-prime ; #init_var
 Var-declaration-prime [ #pnum NUM ] ; #init_array
-Fun-declaration-prime ( Params ) #set_func_start Compound-stmt #return
+Fun-declaration-prime ( #new_scope Params ) #set_func_start Compound-stmt #return #end_scope
 Type-specifier int #push_1
 Type-specifier void #push_2
 Params int #push_int #pid ID Param-prime Param-list
@@ -87,6 +87,6 @@ Factor-zegond ( Expression )
 Factor-zegond #pnum NUM
 Args Arg-list
 Args eps
-Arg-list #push_arg Expression #assign #pop Arg-list-prime
+Arg-list #push_arg Expression #assign_arg #pop Arg-list-prime
 Arg-list-prime , Expression Arg-list-prime
 Arg-list-prime eps

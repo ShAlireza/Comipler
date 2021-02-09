@@ -84,7 +84,6 @@ class Parser:
 
     def __parse(self):
         while True:
-            print(self.stack_parse.peak(), self.current_token)
             if '#' in self.stack_parse.peak():
                 self.code_generator(self.stack_parse.pop()[1:],
                                     _input=self.current_token[1])

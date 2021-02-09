@@ -1,4 +1,4 @@
-from scanner import get_temp, line_num
+from scanner import get_temp, line_num, scope_stack
 
 
 class function_table:
@@ -10,7 +10,7 @@ class function_table:
         ln = line_num
         self.funcs[address] = {'name': name, 'address': address,
                                'return_type': return_type, 'symbol_table': {},
-                               'scope': address, 'line_num': ln, 'params': [],
+                               'scope': scope_stack.top(), 'line_num': ln, 'params': [],
                                'params_type': [], 'params_address': [], 'params_array': [], 'return_addresses': []}
 
     def add_param(self, func, param_name, param_type, param_address, is_array):

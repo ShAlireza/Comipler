@@ -1,24 +1,17 @@
-/*=== Sample 4 == */
-int abs(int a) {
-
-	int i;
-	i = 10;
-	output(i);
-
-    if (a < 0) {
-        return 0-a;
-    } else {
-        return a;
-    }
+/*  ==== Sample 8  ====*/
+int foo(int a[]){
+    output(a[3]);
+    return a[2];
 }
 
-void main(void) {
-    int i;
-    int j;
-    int sum;
-    i = 1;
-    j = 1;
 
-	sum = abs(-5);
-	output(sum);
+void main(void){
+    int b[4];
+    b[0] = 3;
+    b[2] = 2;
+    b[1] = 4;
+    b[3] = 5;
+    int s;
+    output(b[3]);
+    s = foo(b);
 }

@@ -25,11 +25,10 @@ data_address = 1000
 temp_address = 10000
 stack_address = 15000
 
-
 for keyword in keywords:
-    symbol_table[keyword] = {'token': keyword, 'address': 0,
-                             'type': '', 'is_func': False, 'parameters': [], 'scope': -1}
-symbol_table['output'] = {'token': 'output', 'address': 30000, 'type': '', 'is_func': True, 'parameters': [30004], 'scope': -1}
+    symbol_table[(keyword, -1)] = {'token': keyword, 'address': 0,
+                                   'type': '', 'is_func': False, 'parameters': []}
+symbol_table[('output', -1)] = {'token': 'output', 'address': 30000, 'type': '', 'is_func': True, 'parameters': [30004]}
 
 
 def generate_error(error_token_pair):
@@ -75,12 +74,12 @@ def omit_start(token_type, token_len):
     token = unread_parts[:token_len]
     unread_parts = unread_parts[token_len:]
     if token_type == 'ID':
-        print(symbol_table)
-        if token not in symbol_table:
-            symbol_table[token] = {'token': token, 'address': data_address,
-                                   'type': '', 'is_func': False, 'parameters': [],
-                                   'scope': scope_stack.top()}
-            data_address += 4
+        if (token, -1) not in symbol_table:
+            if (token, scope_stack.top()) not in symbol_table:
+                symbol_table[(token, scope_stack.top())] = {'token': token, 'address': data_address,
+                                                            'type': '', 'is_func': False, 'parameters': []}
+                data_address += 4
+
     return token_type, token
 
 
@@ -98,15 +97,11 @@ def get_temp():
     temp_address += 4
     return temp_address
 
+
 def get_stack_temp():
     global stack_address
     stack_address += 4
     return stack_address
-
-def set_type(name, var_type):
-    global symbol_table
-
-    symbol_table[name]['type'] = var_type
 
 
 def increase_data_pointer(value):
@@ -173,7 +168,6 @@ def get_next_token():
     if unread_parts[0] in spaces:
         return omit_start('WHITESPACE', 1)
     return omit_start('ERROR', 1)
-
 
 
 def get_next_token_for_parser():
