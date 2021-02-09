@@ -15,4 +15,5 @@ void main(void){
 	output(i);
 	i=foo(10);
 	output(i);
+	output(9);
 }
