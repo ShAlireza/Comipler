@@ -308,7 +308,7 @@ class CodeGenerator:
         self.arg_counter += 1
 
     def _assign_arg(self, **kwargs):
-        if self.function_table.funcs[self.current_function_address]['params_array']:
+        if self.function_table.funcs[self.current_function_address]['params_array'][self.arg_counter]:
             self.pb[self.index] = (f'(ASSIGN, '
                                    f'@{self.semantic_stack.top()}, '
                                    f'{self.semantic_stack.top(2)},)')
