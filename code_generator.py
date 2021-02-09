@@ -154,10 +154,12 @@ class CodeGenerator:
     def _set_array_address(self, **kwargs):
         temp = get_temp()
         offset, base = self.semantic_stack.top(), self.semantic_stack.top(2)
-
+        print(type(offset), "TYYYYYYYYYYYYYYYYYYPE", offset)
+        offset_x = str(int(offset[1:]) * 4)
+        offset_x = '#' + offset_x
         self.pb[self.index] = (f'(ADD, '
                                f'#{base}, '
-                               f'{offset}, '
+                               f'{offset_x}, '
                                f'{temp})')
 
         self.index += 1
@@ -317,8 +319,9 @@ class CodeGenerator:
         if len(self.function_table.funcs[self.current_function_address]['params']) != 0:
             print(self.function_table.funcs[self.current_function_address], "ISSSSSSSSSSSSSSSSSSSSS", self.arg_counter)
             if self.function_table.funcs[self.current_function_address]['params_array'][self.arg_counter]:
+                print("SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS")
                 self.pb[self.index] = (f'(ASSIGN, '
-                                       f'@{self.semantic_stack.top()}, '
+                                       f'#{self.semantic_stack.top()}, '
                                        f'{self.semantic_stack.top(2)},)')
                 self.semantic_stack.pop()
                 self.arg_counter += 1
