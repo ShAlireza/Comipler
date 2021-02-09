@@ -1,4 +1,4 @@
-from scanner import findaddr, get_temp, increase_data_pointer, symbol_table
+from scanner import findaddr, get_temp, increase_data_pointer, symbol_table, get_stack_temp
 from semantic_stack import SemanticStack
 from help import function_table
 
@@ -8,7 +8,7 @@ class CodeGenerator:
     def __init__(self, semantic_stack: SemanticStack):
         self.semantic_stack = semantic_stack
         self.pb = ['0'] * 1005
-        self.index = 0
+        self.index = 1
         self.function_table = function_table()
         self.inside_if = False
         self.break_bool = False
@@ -18,6 +18,8 @@ class CodeGenerator:
         self.ra = []
         self.main_seen = False
         self.retrun_temp = get_temp()
+        self.retrun_stack = []
+        self.current_function_address = None
 
     def __call__(self, action, **kwargs):
         return getattr(self, '_' + action)(**kwargs)
@@ -27,6 +29,7 @@ class CodeGenerator:
         self.semantic_stack.pop(count)
 
     def _main(self, **kwargs):
+        self.pb[0] = f"(ASSIGN, #0, {self.retrun_temp}, )"
         self.semantic_stack.push(self.index)
         self.index += 1
         self._output()
@@ -34,10 +37,10 @@ class CodeGenerator:
     def _output(self, **kwargs):
         self.pb[self.index] = f'(PRINT, 30004, ,)'
         self.function_table.func_declare('output', 30000, 'void')
-        self.function_table.add_param('output', 'ABOLFAZL', 'int', 30004, False)
+        self.function_table.add_param(30000, 'ABOLFAZL', 'int', 30004, False)
+        self.function_table.funcs[30000]['start_address'] = self.index
         self.index += 1
-        self.function_table.funcs['output']['start_address'] = 1
-        self.function_table.funcs['output']['return_address'] = 2
+        self.pb[self.index] = f"(JP, @{self.retrun_temp}, , )"
         self.index += 1
 
     def _pid(self, **kwargs):
@@ -214,20 +217,25 @@ class CodeGenerator:
     def _if(self, **kwargs):
         self.inside_if = True
 
+
+#########################################################
+
     def _func_declared(self, **kwargs):
-        name = None
-        for names in symbol_table:
-            if symbol_table[names]['address'] == self.semantic_stack.top():
-                name = names
+        names = None
+        for q in symbol_table:
+            if symbol_table[q]['address'] == self.semantic_stack.top():
+                names = symbol_table[q]['token']
                 break
-        print(name, "name was founded")
+        self.function_table.func_declare(names, self.semantic_stack.top(), 'void')
+        name = self.function_table.get_function_name(self.semantic_stack.top())
         if name == 'main':
-            self.pb[0] = f'(JP, #{self.index}, , )'
+            self.pb[1] = f'(JP, #{self.index}, , )'
             self.main_seen = True
         if self.semantic_stack.top(2) == 1:
             self.function_table.func_declare(name, self.semantic_stack.top(), 'int')
         else:
             self.function_table.func_declare(name, self.semantic_stack.top(), 'void')
+        self.current_function_address = self.semantic_stack.top()
 
     def _push_int(self, **kwargs):
         self.semantic_stack.push('int')
@@ -237,96 +245,77 @@ class CodeGenerator:
             self.semantic_stack.push('void')
 
     def _param_added(self, **kwargs):
-        func_name = None
-        for names in symbol_table:
-            if symbol_table[names]['address'] == self.semantic_stack.top(3):
-                func_name = names
-                break
+        func = self.semantic_stack.top(3)
         param_name = None
         for names in symbol_table:
             if symbol_table[names]['address'] == self.semantic_stack.top():
                 param_name = names
                 break
-        self.function_table.add_param(func_name, param_name, self.semantic_stack.top(2), self.semantic_stack.top(),
+        self.function_table.add_param(func, param_name, self.semantic_stack.top(2), self.semantic_stack.top(),
                                       False)
 
         self.semantic_stack.pop(2)
 
     def _param_array_added(self, **kwargs):
-        func_name = None
-        for names in symbol_table:
-            if symbol_table[names]['address'] == self.semantic_stack.top(3):
-                func_name = names
-                break
+        func = self.semantic_stack.top(3)
         param_name = None
         for names in symbol_table:
             if symbol_table[names]['address'] == self.semantic_stack.top():
                 param_name = names
                 break
-        self.function_table.add_param(func_name, param_name, self.semantic_stack.top(2), self.semantic_stack.top(),
+        self.function_table.add_param(func, param_name, self.semantic_stack.top(2), self.semantic_stack.top(),
                                       True)
         self.semantic_stack.pop(2)
 
     def _void_parameter_added(self, **kwargs):
-        func_name = None
-        for names in symbol_table:
-            if symbol_table[names]['address'] == self.semantic_stack.top(3):
-                func_name = names
-                break
-        # self.function_table.add_param(func_name, -1, 'void', -1, -1)
         self.semantic_stack.pop()
 
     def _set_func_start(self, **kwargs):
         if self.main_seen:
             return
-        func_name = None
-        print(self.semantic_stack._stack)
-        for names in symbol_table:
-            if symbol_table[names]['address'] == self.semantic_stack.top():
-                func_name = names
-                break
-        print(func_name, "SET FUNC START")
-        self.function_table.funcs[func_name]['start_address'] = self.index
-        print(self.function_table.funcs[func_name])
+        self.function_table.funcs[self.semantic_stack.top()]['start_address'] = self.index
+        print(self.function_table.funcs[self.semantic_stack.top()])
 
     def _func_call_started(self, **kwargs):
-        func_name = None
-        for names in symbol_table:
-            if symbol_table[names]['address'] == self.semantic_stack.top():
-                func_name = names
-                break
+        func_name = self.semantic_stack.top()
         print("FUNC CALL STARTED")
+        print(self.semantic_stack._stack)
         print(func_name)
+        print(self.function_table.funcs)
         self.func_number_of_args = len(self.function_table.funcs[func_name]['params'])
         self.arg_counter = 0
-        self.func_names = func_name
-        self.function_table.funcs[self.func_names]['call'] = True
-
-    def _push_arg(self, **kwargs):
-        print(self.function_table.funcs[self.func_names]['params_address'], "DDDDDDDDDDDDDDDDDDDDDDDDDDdddddd")
-        self.semantic_stack.push(self.function_table.funcs[self.func_names]['params_address'][self.arg_counter])
-        self.arg_counter += 1
+        self.current_function_address = func_name
 
     def _func_call_ended(self, **kwargs):
-        self.func_number_of_args = -1
-        self.arg_counter = -1
-        self.ra.append(self.index)
+        self.current_function_address = self.semantic_stack.top()
+        stack_temp = get_stack_temp()
+        self.retrun_stack.append(stack_temp)
+        self.pb[self.index] = f"(ASSIGN, #0, {self.current_function_address}, )"
+        self.index += 1
+        self.pb[self.index] = f"(ASSIGN, #0, {stack_temp}, )"
+        self.index += 1
+        self.pb[self.index] = f"(ASSIGN, {self.retrun_temp}, {stack_temp}, )"
+        self.index += 1
         self.pb[self.index] = f"(ASSIGN, #{self.index + 2}, {self.retrun_temp}, )"
         self.index += 1
-        self.pb[self.index] = f"(JP, {self.function_table.funcs[self.func_names]['start_address']}, , )"
+        self.pb[self.index] = f"(JP, #{self.function_table.funcs[self.current_function_address]['start_address']}, , )"
         self.index += 1
-        self.pb[self.function_table.funcs[self.func_names]['return_address']] = f"(JP, @{self.retrun_temp}, , )"
-        self.func_names = None
+        self.pb[self.index] = f"(ASSIGN, {self.retrun_stack.pop()}, {self.retrun_temp},  )"
+        self.index += 1
+
+    def _push_arg(self, **kwargs):
+        self.semantic_stack.push(self.function_table.funcs[self.current_function_address]['params_address'][self.arg_counter])
+        self.arg_counter += 1
+
+    def _assign_to_func(self, **kwargs):
+        print(self.semantic_stack._stack, "LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL")
+        self.pb[self.index] = f'(ASSIGN, {self.semantic_stack.top()}, {self.semantic_stack.top(3)}, )'  # todo
+        self.index += 1
+        self.semantic_stack.pop()
 
     def _return(self, **kwargs):
         if self.main_seen:
             return
-        func_name = None
-        for names in symbol_table:
-            if symbol_table[names]['address'] == self.semantic_stack.top():
-                func_name = names
-                break
-        self.function_table.funcs[func_name]['return_address'] = self.index
+        self.current_function_address = self.semantic_stack.top()
+        self.pb[self.index] = f"(JP, @{self.retrun_temp}, , )"
         self.index += 1
-        self._pop()
-        self._pop()

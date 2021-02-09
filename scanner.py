@@ -19,6 +19,13 @@ keywords = ['if', 'else', 'void', 'int', 'while',
 spaces = [' ', '\n', '\t', '\r', '\v', '\f']
 data_address = 1000
 temp_address = 10000
+stack_address = 15000
+
+
+for keyword in keywords:
+    symbol_table[keyword] = {'token': keyword, 'address': 0,
+                             'type': '', 'is_func': False, 'parameters': [], 'scope': -1}
+symbol_table['output'] = {'token': 'output', 'address': 30000, 'type': '', 'is_func': True, 'parameters': [30004], 'scope': -1}
 
 
 def generate_error(error_token_pair):
@@ -64,6 +71,7 @@ def omit_start(token_type, token_len):
     token = unread_parts[:token_len]
     unread_parts = unread_parts[token_len:]
     if token_type == 'ID':
+        print(symbol_table)
         if token not in symbol_table:
             symbol_table[token] = {'token': token, 'address': data_address,
                                    'type': '', 'is_func': False, 'parameters': [], 'scope': None}
@@ -85,6 +93,10 @@ def get_temp():
     temp_address += 4
     return temp_address
 
+def get_stack_temp():
+    global stack_address
+    stack_address += 4
+    return stack_address
 
 def set_type(name, var_type):
     global symbol_table
@@ -157,10 +169,6 @@ def get_next_token():
         return omit_start('WHITESPACE', 1)
     return omit_start('ERROR', 1)
 
-
-for keyword in keywords:
-    symbol_table[keyword] = {'token': keyword, 'address': 0,
-                             'type': '', 'is_func': False, 'parameters': [], 'scope': -1}
 
 
 def get_next_token_for_parser():

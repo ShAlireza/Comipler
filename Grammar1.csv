@@ -35,7 +35,7 @@ Selection-stmt if #if ( Expression #save ) Statement #jpf_save else Statement #j
 Iteration-stmt #break_temp while ( #label Expression #save ) Statement #while #set_break_temp
 Return-stmt return Return-stmt-prime
 Return-stmt-prime ;
-Return-stmt-prime Expression #assign ;
+Return-stmt-prime Expression #assign_to_func ;
 Switch-stmt #break_temp switch ( Expression ) { Case-stmts Default-stmt } #pop #set_break_temp
 Case-stmts Case-stmt Case-stmts
 Case-stmts eps
