@@ -307,11 +307,22 @@ class CodeGenerator:
         self.semantic_stack.push(self.function_table.funcs[self.current_function_address]['params_address'][self.arg_counter])
         self.arg_counter += 1
 
+    def _assign_arg(self, **kwargs):
+        if self.function_table.funcs[self.current_function_address]['params_array']:
+            self.pb[self.index] = (f'(ASSIGN, '
+                                   f'@{self.semantic_stack.top()}, '
+                                   f'{self.semantic_stack.top(2)},)')
+            self.semantic_stack.pop()
+            self.index += 1
+        else:
+            self._assign()
+
     def _assign_to_func(self, **kwargs):
         print(self.semantic_stack._stack, "LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL")
-        self.pb[self.index] = f'(ASSIGN, {self.semantic_stack.top()}, {self.semantic_stack.top(3)}, )'  # todo
+        self.pb[self.index] = f'(ASSIGN, {self.semantic_stack.top()}, {self.semantic_stack.top(3)}, )'  # todo why 3 work?
         self.index += 1
         self.semantic_stack.pop()
+
 
     def _return(self, **kwargs):
         if self.main_seen:

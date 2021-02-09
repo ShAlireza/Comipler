@@ -87,6 +87,6 @@ Factor-zegond ( Expression )
 Factor-zegond #pnum NUM
 Args Arg-list
 Args eps
-Arg-list #push_arg Expression #assign #pop Arg-list-prime
+Arg-list #push_arg Expression #assign_arg #pop Arg-list-prime
 Arg-list-prime , Expression Arg-list-prime
 Arg-list-prime eps
