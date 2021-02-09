@@ -1,12 +1,15 @@
 from scanner import findaddr, get_temp, increase_data_pointer, symbol_table, get_stack_temp
+from scope_stack import ScopeStack
 from semantic_stack import SemanticStack
 from help import function_table
 
 
 class CodeGenerator:
 
-    def __init__(self, semantic_stack: SemanticStack):
+    def __init__(self, semantic_stack: SemanticStack, scope_stack: ScopeStack):
         self.semantic_stack = semantic_stack
+        self.scope_stack = scope_stack
+        self.scope_stack.push(0)
         self.pb = ['0'] * 1005
         self.index = 1
         self.function_table = function_table()
@@ -20,6 +23,7 @@ class CodeGenerator:
         self.retrun_temp = get_temp()
         self.retrun_stack = []
         self.current_function_address = None
+        self.func_call_stack = []
 
     def __call__(self, action, **kwargs):
         return getattr(self, '_' + action)(**kwargs)
@@ -221,12 +225,15 @@ class CodeGenerator:
 #########################################################
 
     def _func_declared(self, **kwargs):
+        from scanner import line_num
         names = None
         for q in symbol_table:
             if symbol_table[q]['address'] == self.semantic_stack.top():
                 names = symbol_table[q]['token']
                 break
         self.function_table.func_declare(names, self.semantic_stack.top(), 'void')
+        self.scope_stack.push(line_num)
+
         name = self.function_table.get_function_name(self.semantic_stack.top())
         if name == 'main':
             self.pb[1] = f'(JP, #{self.index}, , )'
@@ -236,6 +243,7 @@ class CodeGenerator:
         else:
             self.function_table.func_declare(name, self.semantic_stack.top(), 'void')
         self.current_function_address = self.semantic_stack.top()
+        self.func_call_stack.append(self.semantic_stack.top())
 
     def _push_int(self, **kwargs):
         self.semantic_stack.push('int')
@@ -285,9 +293,10 @@ class CodeGenerator:
         self.func_number_of_args = len(self.function_table.funcs[func_name]['params'])
         self.arg_counter = 0
         self.current_function_address = func_name
+        self.func_call_stack.append(func_name)
+
 
     def _func_call_ended(self, **kwargs):
-        self.current_function_address = self.semantic_stack.top()
         stack_temp = get_stack_temp()
         self.retrun_stack.append(stack_temp)
         self.pb[self.index] = f"(ASSIGN, #0, {self.current_function_address}, )"
@@ -318,11 +327,16 @@ class CodeGenerator:
             self._assign()
 
     def _assign_to_func(self, **kwargs):
-        print(self.semantic_stack._stack, "LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL")
-        self.pb[self.index] = f'(ASSIGN, {self.semantic_stack.top()}, {self.semantic_stack.top(3)}, )'  # todo why 3 work?
-        self.index += 1
-        self.semantic_stack.pop()
-
+        print(self.semantic_stack._stack, self.func_call_stack, self.current_function_address)
+        if self.main_seen:
+            self.pb[self.index] = f'(ASSIGN, {self.semantic_stack.top()}, {self.func_call_stack.pop()}, )'  # todo why 3 work?
+            self.index += 1
+            self.semantic_stack.pop()
+        else:
+            self.pb[
+                self.index] = f'(ASSIGN, {self.semantic_stack.top()}, {self.current_function_address}, )'  # todo why 3 work?
+            self.index += 1
+            self.semantic_stack.pop()
 
     def _return(self, **kwargs):
         if self.main_seen:
@@ -330,3 +344,4 @@ class CodeGenerator:
         self.current_function_address = self.semantic_stack.top()
         self.pb[self.index] = f"(JP, @{self.retrun_temp}, , )"
         self.index += 1
+        self.scope_stack.pop()

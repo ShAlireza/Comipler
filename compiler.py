@@ -6,6 +6,7 @@ import scanner
 import tree
 
 from code_generator import CodeGenerator
+from scope_stack import ScopeStack
 from semantic_stack import SemanticStack
 
 
@@ -72,7 +73,9 @@ class Parser:
         self.initial_parse_table()
         self.stack_parse.push('Program')
         self.semantic_stack = SemanticStack()
-        self.code_generator = CodeGenerator(self.semantic_stack)
+        self.scope_stack = scanner.scope_stack
+        self.code_generator = CodeGenerator(self.semantic_stack,
+                                            self.scope_stack)
 
     def parse(self):
         self.__parse()
@@ -318,6 +321,8 @@ class Parser:
 
 parser = Parser()
 parser.parse()
+# print(scanner.symbol_table)
+# print(parser.code_generator.function_table.funcs)
 
 with open('output.txt', 'w') as file:
     for i, code in enumerate(parser.code_generator.pb):

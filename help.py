@@ -10,7 +10,7 @@ class function_table:
         ln = line_num
         self.funcs[address] = {'name': name, 'address': address,
                                'return_type': return_type, 'symbol_table': {},
-                               'scope': 0, 'line_num': ln, 'params': [],
+                               'scope': address, 'line_num': ln, 'params': [],
                                'params_type': [], 'params_address': [], 'params_array': [], 'return_addresses': []}
 
     def add_param(self, func, param_name, param_type, param_address, is_array):

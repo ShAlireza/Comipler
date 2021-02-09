@@ -1,3 +1,6 @@
+from scope_stack import ScopeStack
+
+
 class Util:
     @classmethod
     def read(cls, file_name):
@@ -17,6 +20,7 @@ symbols = [';', ':', ',', '[', ']', '(', ')', '{', '}', '+', '-', '*', '<']
 keywords = ['if', 'else', 'void', 'int', 'while',
             'break', 'switch', 'default', 'case', 'return']
 spaces = [' ', '\n', '\t', '\r', '\v', '\f']
+scope_stack = ScopeStack()
 data_address = 1000
 temp_address = 10000
 stack_address = 15000
@@ -74,7 +78,8 @@ def omit_start(token_type, token_len):
         print(symbol_table)
         if token not in symbol_table:
             symbol_table[token] = {'token': token, 'address': data_address,
-                                   'type': '', 'is_func': False, 'parameters': [], 'scope': None}
+                                   'type': '', 'is_func': False, 'parameters': [],
+                                   'scope': scope_stack.top()}
             data_address += 4
     return token_type, token
 

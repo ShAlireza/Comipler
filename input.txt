@@ -1,19 +1,24 @@
-/*===== Sample 1 =====*/
-int foo(int x){
-	if (x < 0){
-		output(x);
-		return 1;
-	}
-	else {
-		output(x);
-		return x + -2;
-	}
-}
-void main(void){
+/*=== Sample 4 == */
+int abs(int a) {
+
 	int i;
-	i= foo(0);
+	i = 10;
 	output(i);
-	i=foo(10);
-	output(i);
-	output(9);
+
+    if (a < 0) {
+        return 0-a;
+    } else {
+        return a;
+    }
+}
+
+void main(void) {
+    int i;
+    int j;
+    int sum;
+    i = 1;
+    j = 1;
+
+	sum = abs(-5);
+	output(sum);
 }
